@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+    
+    
+
+    <RelativeLayout
+        android:id="@+id/custom_title"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:background="#1fe0a7"
+       >
+        <RelativeLayout
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:clickable="true"
+           >
+            <ImageView
+                android:id="@+id/arrow_left"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/arrows_left" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_toRightOf="@id/arrow_left"
+                android:text="返回"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:gravity="center" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="设置寝室"
+            android:textSize="20sp"
+            android:textColor="#fff"
+           android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+       android:layout_below="@id/custom_title"
+        android:layout_centerInParent="true"
+        android:src="@drawable/electricity"
+        android:layout_marginTop="35dp"/>
+
+    <LinearLayout
+        android:id="@+id/setting_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true">
+        
+        <LinearLayout
+            android:id="@+id/area"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/electricity_activity_electricity_switchdormitory_area"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/electricity_activity_electricity_switchdormitory_area"
+                android:scaleType="fitXY" />
+            <Spinner
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:id="@+id/area_selector"
+                android:gravity="center"
+                android:background="@drawable/input_box"/>
+        </LinearLayout>
+<TextView 
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
+        
+        <LinearLayout
+            android:id="@+id/build"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/electricity_activity_electricity_switchdormitory_build"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:src="@drawable/electricity_activity_electricity_switchdormitory_build"
+                android:scaleType="fitXY" />
+            <EditText
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:hint="请输入楼栋号，例如7"
+                android:id="@+id/build_num_input"
+                android:inputType="number"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/input_box" />
+        </LinearLayout>
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="15dp"/>
+
+        <LinearLayout
+            android:id="@+id/room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/electricity_activity_electricity_switchdormitory_room"
+                android:layout_height="40dp"
+                android:layout_width="40dp"
+                android:src="@drawable/electricity_activity_electricity_switchdormitory_room" />
+            <EditText
+                android:layout_height="match_parent"
+                android:layout_width="220dp"
+                android:id="@+id/room_num_input"
+                android:textSize="15sp"
+                android:hint="请输入寝室号，例如303"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:inputType="number"
+                android:background="@drawable/input_box"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="140dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:text="确 定"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@drawable/confirm_button_bg"
+        android:layout_below="@id/setting_room" />
+</RelativeLayout>

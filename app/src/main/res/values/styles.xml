@@ -1,0 +1,20 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. --><item name="android:statusBarColor">@color/mainColor_dark</item>
+
+    </style>
+
+    <style name="mySpinnerStyle" parent="android:Widget.ListView.DropDown">
+        <item name="android:divider">#fff</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="myTheme" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+
+</resources>

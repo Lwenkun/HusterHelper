@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@color/white">
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:paddingTop="20dp">
+        <RelativeLayout 
+            android:id="@+id/image_box"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true">
+             <ImageView 
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/electricity_activity_electricity_no_set_dormitory_1"/>
+            
+        </RelativeLayout>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/image_box"
+            android:layout_centerHorizontal="true"
+            android:text="请先添加寝室噢!"/>
+        <ImageView 
+            android:layout_width="50dp"
+            android:layout_height="40dp" 
+            android:layout_alignTop="@id/image_box"
+            android:layout_toRightOf="@id/image_box"
+            android:src="@drawable/electricity_activity_electricity_no_set_dormitory_2"/>
+       
+    </RelativeLayout>
+
+</LinearLayout>

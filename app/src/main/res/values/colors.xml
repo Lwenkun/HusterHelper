@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mainColor">#1fe0a7</color>
+    <color name="grayText">#888</color>
+    <color name="white">#fff</color>
+    <color name="grayHint">#aeaeae</color>
+    <color name="defColor">#eee</color>
+    <color name="mainColor_dark">#260</color>
+    <color name="orange">#ff6600</color>
+    <color name="transparent">#00000000</color>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1fe0a7">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/back"
+        android:text="退出"
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:background="#1fe0a7"
+        android:padding="10dp"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"/>
+    <TextView
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:id="@+id/title_text"
+        android:layout_weight="1"
+        android:text="查电量"
+        android:textSize="20dp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:layout_gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/switcher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#1fe0a7"
+        android:textColor="#fff"
+        android:text="切换"
+        android:textSize="20dp"
+        android:padding="10dp"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"/>
+
+</LinearLayout>
