@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal"
-        android:background="#1fe0a7"
+        android:background="@color/mainColor"
        >
         <RelativeLayout
             android:id="@+id/back"
@@ -33,7 +33,7 @@
                 android:layout_toRightOf="@id/arrow_left"
                 android:text="返回"
                 android:textSize="20sp"
-                android:textColor="#fff"
+                android:textColor="@color/white"
                 android:gravity="center" />
         </RelativeLayout>
         <TextView
@@ -42,7 +42,7 @@
             android:gravity="center"
             android:text="设置寝室"
             android:textSize="20sp"
-            android:textColor="#fff"
+            android:textColor="@color/white"
            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
@@ -147,7 +147,7 @@
         android:layout_centerHorizontal="true"
         android:text="确 定"
         android:textSize="20sp"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:background="@drawable/confirm_button_bg"
         android:layout_below="@id/setting_room" />
 </RelativeLayout>

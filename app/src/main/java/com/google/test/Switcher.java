@@ -17,57 +17,58 @@ import android.widget.Toast;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class Switcher extends AppCompatActivity {
+public class Switcher extends AppCompatActivity implements View.OnClickListener,OnItemSelectedListener{
 
     private EditText buildNumInput;
 
     private EditText roomNumInput;
 
-    private Button bindEmail;
-
     private Spinner areaSelector;
 
-    private int mPosition;
+    private int position;
+
+    final String[] areaList = {"东区", "西区" , "韵苑", "紫菘"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.switcher);
         areaSelector = (Spinner) findViewById(R.id.area_selector);
         buildNumInput = (EditText) findViewById(R.id.build_num_input);
         roomNumInput = (EditText) findViewById(R.id.room_num_input);
-        bindEmail = (Button) findViewById(R.id.confirm);
+        Button bindEmail = (Button) findViewById(R.id.confirm);
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        final String[] areaList = {"东区", "西区" , "韵苑", "紫菘"};
+        back.setOnClickListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Switcher.this, R.layout.area_item, areaList);
         areaSelector.setAdapter(adapter);
-        areaSelector.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                mPosition = arg2;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0){
+        areaSelector.setOnItemSelectedListener(this);
+        bindEmail.setOnClickListener(this);
+}
 
-            }
-        });
-        bindEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String area = areaList[mPosition];
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back:
+                finish();
+                break;
+            case R.id.confirm:
+                String area = areaList[position];
                 String buildNum = buildNumInput.getText().toString();
                 String roomNum = roomNumInput.getText().toString();
                 check(area, buildNum, roomNum);
-            }
-        });
+                break;
+        }
     }
+
+        @Override
+        public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            position = arg2;
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0){
+
+        }
 
     private void check(String area, String buildNum, String roomNum) {
         if(buildNum.equals("")){
@@ -77,13 +78,12 @@ public class Switcher extends AppCompatActivity {
         }else {
             SharedPreferences remRoomInfo = getSharedPreferences("RoomInfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = remRoomInfo.edit();
-            editor.putInt("position", mPosition);
+            editor.putInt("position", position);
             editor.putString("area", area);
             editor.putString("buildNum", buildNum);
             editor.putString("roomNum", roomNum);
             editor.commit();
             Intent intent = new Intent();
-            intent.putExtra("ifRefreshData", true);
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -99,7 +99,6 @@ public class Switcher extends AppCompatActivity {
         areaSelector.setSelection(position);
         buildNumInput.setText(buildNum);
         roomNumInput.setText(roomNum);
-        mPosition = position;
+        this.position = position;
     }
-
 }

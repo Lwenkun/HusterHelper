@@ -9,7 +9,7 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <fragment
-            android:name="com.google.test.DefaultContentView"
+            android:name="fragments.DefaultContentView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/content_view" />

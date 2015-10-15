@@ -28,7 +28,6 @@ public class BindEmail extends Activity implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.fill_email);
         emailInput = (EditText) findViewById(R.id.email_input);
         Button cancel = (Button) findViewById(R.id.cancel);
@@ -54,8 +53,6 @@ public class BindEmail extends Activity implements View.OnClickListener{
         buildNumText.setText(buildNum);
         roomNumText.setText(roomNum);
     }
-
-    //多个按钮调用同一个回调方法
 
     @Override
     public void onClick(View v) {
@@ -84,13 +81,13 @@ public class BindEmail extends Activity implements View.OnClickListener{
         if(email.equals("")) {
         	Toast.makeText(BindEmail.this, "邮箱不可以为空哦", Toast.LENGTH_SHORT).show();
         }else {
-           SharedPreferences.Editor editor = roomInfo.edit().putString("email", email);
+            SharedPreferences.Editor editor = roomInfo.edit().putString("email", email);
             editor.commit();
-        Intent intent = new Intent();
-        intent.putExtra("ifBindEmail",ifBindEmail);
-        intent.putExtra("email", email);
-        setResult(RESULT_OK, intent);
-        finish();
+            Intent intent = new Intent();
+            intent.putExtra("ifBindEmail",ifBindEmail);
+            intent.putExtra("email", email);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 

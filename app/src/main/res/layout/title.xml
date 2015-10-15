@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#1fe0a7">
+    android:background="@color/mainColor">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/back"
         android:text="退出"
         android:textSize="20dp"
-        android:textColor="#fff"
-        android:background="#1fe0a7"
+        android:textColor="@color/white"
+        android:background="@color/mainColor"
         android:padding="10dp"
         android:layout_gravity="center_vertical"
         android:clickable="true"/>
@@ -21,15 +21,15 @@
         android:layout_weight="1"
         android:text="查电量"
         android:textSize="20dp"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:gravity="center"
         android:layout_gravity="center_vertical"/>
     <TextView
         android:id="@+id/switcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#1fe0a7"
-        android:textColor="#fff"
+        android:background="@color/mainColor"
+        android:textColor="@color/white"
         android:text="切换"
         android:textSize="20dp"
         android:padding="10dp"
