@@ -82,8 +82,6 @@ public class RequestHandler {
                     }
                     Message message = new Message();
                     JSONObject data = new JSONObject(response.toString());
-                   // message.obj = data;
-                   // message.what = JSONParser.parseJSONForCode(data);
                     message.obj = data;
                     mHandler.sendMessage(message);
                 } catch (Exception e) {
@@ -109,6 +107,7 @@ public class RequestHandler {
                     connection = (HttpURLConnection) mUrl.openConnection();
                     connection.setDoOutput(true);
                     connection.setDoInput(true);
+                    connection.setRequestMethod(mRequestMethod);
                     DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                     out.writeBytes(mParams);
                     out.flush();
@@ -134,4 +133,5 @@ public class RequestHandler {
             }
         }).start();
     }
+
 }

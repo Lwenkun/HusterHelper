@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -87,7 +86,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
             public void handleMessage(Message msg) {
                 progressDialog.dismiss();
                 msg.what = JSONParser.parseJSONForCode((JSONObject)msg.obj);
-                Log.d("test3", ""+msg.what);
+              //  Log.d("test3", ""+msg.what);
                 switch (msg.what) {
                     case 200:
                         showDialogNotice();
@@ -110,40 +109,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
             }
         });
         RequestHandler.sendRequest();
-     /*  new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpURLConnection connection = null;
-                try {
-                    URL url = new URL("http://api.hustonline.net/dianfei/notify");
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoOutput(true);
-                    connection.setDoInput(true);
 
-                    DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-                    out.writeBytes(params);
-                    out.close();
-                    InputStream in = connection.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = reader.readLine()) != null){
-                        response.append(line);
-                    }
-                    Message message = new Message();
-                    JSONObject data = new JSONObject(response.toString());
-                    message.what = JSONParser.parseJSONForCode(data);
-                    handler.sendMessage(message);
-                }catch(Exception e) {
-                    e.printStackTrace();
-
-                }finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                }
-            }
-        }).start();*/
     }
 
     @Override
