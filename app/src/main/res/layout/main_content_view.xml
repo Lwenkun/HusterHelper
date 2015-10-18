@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
         <RelativeLayout
             android:id="@+id/block_1"
             android:layout_width="match_parent"
@@ -110,12 +109,11 @@
                 android:textColor="@color/grayHint"
                 android:paddingRight="0dp"
                 android:gravity="center_vertical"/>
-            <LinearLayout
+            <com.google.test.customViews.RecentElectricity
                 android:id="@+id/show_recent_electricity"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
-            </LinearLayout>
+                android:layout_weight="1" />
         </LinearLayout>
 </LinearLayout>

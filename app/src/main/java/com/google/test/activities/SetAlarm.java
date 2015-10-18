@@ -1,4 +1,4 @@
-package com.google.test;
+package com.google.test.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,8 +19,9 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import json.JSONParser;
-import network.RequestHandler;
+import com.google.test.R;
+import com.google.test.json.BaseJSONParser;
+import com.google.test.network.HttpUtil;
 
 /**
  * Created by 15119 on 2015/9/30.
@@ -67,26 +68,26 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
         String notify = notifyInput.getText().toString();
         String params;
         try {
-            RequestHandler.setUrl(new URL("http://api.hustonline.net/dianfei/notify"));
+            HttpUtil.setUrl(new URL("http://api.hustonline.net/dianfei/notify"));
             params = "area=" + URLEncoder.encode(area, "UTF-8")
                     + "&build=" + buildNum
                     + "&room=" + roomNum
                     + "&email=" + email;
             if(ifBindEmail){
-                RequestHandler.setRequestMethod("POST");
+                HttpUtil.setRequestMethod("POST");
                 params = params + "&notify=" + notify;
             }else {
-                RequestHandler.setRequestMethod("DELETE");
+                HttpUtil.setRequestMethod("DELETE");
             }
-            RequestHandler.setParams(params);
+            HttpUtil.setParams(params);
         }catch (Exception e) {
             e.printStackTrace();
         }
-        RequestHandler.setHandler(new Handler(){
+        HttpUtil.setHandler(new Handler() {
             public void handleMessage(Message msg) {
                 progressDialog.dismiss();
-                msg.what = JSONParser.parseJSONForCode((JSONObject)msg.obj);
-              //  Log.d("test3", ""+msg.what);
+                msg.what = BaseJSONParser.parseJSONForCode((JSONObject) msg.obj);
+                //  Log.d("test3", ""+msg.what);
                 switch (msg.what) {
                     case 200:
                         showDialogNotice();
@@ -98,17 +99,18 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
                         Toast.makeText(SetAlarm.this, "邮箱绑定失败，请稍后重试", Toast.LENGTH_SHORT).show();
                         break;
                     case 410:
-                        if(ifBindEmail) {
+                        if (ifBindEmail) {
                             Toast.makeText(SetAlarm.this, "亲，该邮箱已经绑定过了哦~", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             Toast.makeText(SetAlarm.this, "亲，邮箱还未绑定呢~", Toast.LENGTH_SHORT).show();
                         }
                         break;
-                    default:break;
+                    default:
+                        break;
                 }
             }
         });
-        RequestHandler.sendRequest();
+        HttpUtil.sendRequest();
 
     }
 

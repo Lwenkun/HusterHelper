@@ -1,4 +1,4 @@
-package com.google.test;
+package com.google.test.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.test.R;
 
 /**
  * Created by 15119 on 2015/9/30.
@@ -24,18 +26,21 @@ public class BindEmail extends Activity implements View.OnClickListener{
     private TextView unbindEmail;
 
     private SharedPreferences roomInfo;
+
    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fill_email);
+        initView();
+    }
+
+    public void initView() {
         emailInput = (EditText) findViewById(R.id.email_input);
         Button cancel = (Button) findViewById(R.id.cancel);
         Button confirm = (Button) findViewById(R.id.confirm);
         bindEmail = (TextView) findViewById(R.id.bind_email);
         unbindEmail = (TextView) findViewById(R.id.unbind_email);
-        //传入该类自身，将接口赋给bindEmail的一个私有成员mOnclickListener（到时候要调用这个里面的onClick()方法），然后在
-        // 按钮点击的时候就会调用该按钮的performOnclick()方法，进而调用Activity中的onClick()回调方法。
         bindEmail.setOnClickListener(this);
         unbindEmail.setOnClickListener(this);
         cancel.setOnClickListener(this);
@@ -81,8 +86,7 @@ public class BindEmail extends Activity implements View.OnClickListener{
         if(email.equals("")) {
         	Toast.makeText(BindEmail.this, "邮箱不可以为空哦", Toast.LENGTH_SHORT).show();
         }else {
-            SharedPreferences.Editor editor = roomInfo.edit().putString("email", email);
-            editor.commit();
+            roomInfo.edit().putString("email", email).apply();
             Intent intent = new Intent();
             intent.putExtra("ifBindEmail",ifBindEmail);
             intent.putExtra("email", email);

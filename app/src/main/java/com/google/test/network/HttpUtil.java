@@ -1,4 +1,4 @@
-package network;
+package com.google.test.network;
 
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * Created by 15119 on 2015/10/14.
  */
-public class RequestHandler {
+public class HttpUtil {
 
     private static URL mUrl;
 
@@ -61,7 +61,7 @@ public class RequestHandler {
     }
 
     /**
-     * 如果是GET请求
+     * 处理GET请求
      */
     public static void sendGetRequest() {
         new Thread(new Runnable() {
@@ -96,7 +96,7 @@ public class RequestHandler {
     }
 
     /**
-     * 如果是DELETE或POST请求
+     * 处理DELETE或POST请求
      */
     public static void sendDeleteOrPostRequest() {
         new Thread(new Runnable() {
@@ -133,5 +133,6 @@ public class RequestHandler {
             }
         }).start();
     }
+
 
 }

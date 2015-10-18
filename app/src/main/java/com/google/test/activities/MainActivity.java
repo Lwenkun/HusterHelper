@@ -1,4 +1,4 @@
-package com.google.test;
+package com.google.test.activities;
 
 
 import android.app.FragmentManager;
@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import fragments.ContentView;
-import fragments.EmptyContentView;
+import com.google.test.R;
+import com.google.test.fragments.ContentView;
+import com.google.test.fragments.EmptyContentView;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
@@ -20,11 +21,15 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
+    }
+
+    public void initView() {
         TextView back = (TextView) findViewById(R.id.back);
         TextView switcher = (TextView) findViewById(R.id.switcher);
         back.setOnClickListener(this);
         switcher.setOnClickListener(this);
-        switchContentView();//???
+        switchContentView();
     }
 
     @Override
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 finish();
                 break;
             case R.id.switcher:
-                Intent intent = new Intent(MainActivity.this, Switcher.class);
+                Intent intent = new Intent(MainActivity.this, SwitchDormitory.class);
                 startActivityForResult(intent, 1);
                 break;
         }

@@ -1,4 +1,4 @@
-package com.google.test;
+package com.google.test.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +14,12 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.test.R;
+
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class Switcher extends AppCompatActivity implements View.OnClickListener,OnItemSelectedListener{
+public class SwitchDormitory extends AppCompatActivity implements View.OnClickListener,OnItemSelectedListener{
 
     private EditText buildNumInput;
 
@@ -33,17 +35,21 @@ public class Switcher extends AppCompatActivity implements View.OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.switcher);
+        initView();
+}
+
+    public void initView() {
         areaSelector = (Spinner) findViewById(R.id.area_selector);
         buildNumInput = (EditText) findViewById(R.id.build_num_input);
         roomNumInput = (EditText) findViewById(R.id.room_num_input);
         Button bindEmail = (Button) findViewById(R.id.confirm);
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Switcher.this, R.layout.area_item, areaList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitory.this, R.layout.area_item, areaList);
         areaSelector.setAdapter(adapter);
         areaSelector.setOnItemSelectedListener(this);
         bindEmail.setOnClickListener(this);
-}
+    }
 
     @Override
     public void onClick(View v) {
@@ -52,10 +58,7 @@ public class Switcher extends AppCompatActivity implements View.OnClickListener,
                 finish();
                 break;
             case R.id.confirm:
-                String area = areaList[position];
-                String buildNum = buildNumInput.getText().toString();
-                String roomNum = roomNumInput.getText().toString();
-                check(area, buildNum, roomNum);
+                check();
                 break;
         }
     }
@@ -70,11 +73,14 @@ public class Switcher extends AppCompatActivity implements View.OnClickListener,
 
         }
 
-    private void check(String area, String buildNum, String roomNum) {
+    private void check() {
+        String area = areaList[position];
+        String buildNum = buildNumInput.getText().toString();
+        String roomNum = roomNumInput.getText().toString();
         if(buildNum.equals("")){
-            Toast.makeText(Switcher.this, "楼栋号不可以为空哦~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitory.this, "楼栋号不可以为空哦~", Toast.LENGTH_SHORT).show();
         }else if(roomNum.equals("")){
-            Toast.makeText(Switcher.this, "寝室号不可以为空哦~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitory.this, "寝室号不可以为空哦~", Toast.LENGTH_SHORT).show();
         }else {
             SharedPreferences remRoomInfo = getSharedPreferences("RoomInfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = remRoomInfo.edit();
@@ -82,7 +88,7 @@ public class Switcher extends AppCompatActivity implements View.OnClickListener,
             editor.putString("area", area);
             editor.putString("buildNum", buildNum);
             editor.putString("roomNum", roomNum);
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
             finish();
