@@ -1,35 +1,40 @@
-package com.google.test.activities;
+package com.google.test.ui.activities;
 
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.google.test.R;
-import com.google.test.fragments.ContentView;
-import com.google.test.fragments.EmptyContentView;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        init();
+    }
+
+    public void init() {
         initView();
     }
 
     public void initView() {
+
+        loadContentView();
+
         TextView back = (TextView) findViewById(R.id.back);
         TextView switcher = (TextView) findViewById(R.id.switcher);
+
         back.setOnClickListener(this);
         switcher.setOnClickListener(this);
-        switchContentView();
+
     }
 
     @Override
@@ -45,34 +50,41 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
         }
     }
 
-    private void switchContentView() {
-    	SharedPreferences roomInfo =  getSharedPreferences("RoomInfo", MODE_PRIVATE);
-        String buildNum = roomInfo.getString("buildNum", "");
-        String roomNum = roomInfo.getString("roomNum", "");
-        FragmentManager fragmentManager = getFragmentManager();
-    	FragmentTransaction  transaction =  fragmentManager.beginTransaction();
-        //这里应该判断网络状态
-        if(buildNum.equals("")||roomNum.equals("")) {
-            EmptyContentView defaultContentView = new EmptyContentView();
-            transaction.replace(R.id.main_view_container, defaultContentView);
-            transaction.commit();
-        }else {
-        	ContentView contentView = new ContentView();
-    		transaction.replace(R.id.main_view_container, contentView);   			
-            transaction.commit();
+    private void loadContentView() {
+
+        View view;
+
+        //这里判断网络状态
+        if (! isNetworkAvailable()) {
+
+            view = LayoutInflater.from(this).inflate(R.layout.activity_main_no_network, null);
+
+        } else if (getSharedPreferences("RoomInfo", MODE_PRIVATE) == null) {
+
+           view = LayoutInflater.from(this).inflate(R.layout.activity_main_first_use, null);
+        } else {
+
+            view = LayoutInflater.from(this).inflate(R.layout.activity_main_main_page, null);
         }
+
+        setContentView(view);
 	}
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return manager.getActiveNetworkInfo().isAvailable();
+
+    }
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	switch (requestCode) {
     	case 1:
     		if (resultCode == RESULT_OK) {
-    			switchContentView();
+                refresh();
+//    			reloadContentView
     		}
     		break;
-        default:
-            break;
     	}
     }
 

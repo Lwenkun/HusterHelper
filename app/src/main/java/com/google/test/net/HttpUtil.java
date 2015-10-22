@@ -1,4 +1,4 @@
-package com.google.test.network;
+package com.google.test.net;
 
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +15,7 @@ import java.net.URL;
 /**
  * Created by 15119 on 2015/10/14.
  */
-public class HttpUtil {
+public class HttpUtil {//getInstance
 
     private static URL mUrl;
 

@@ -1,4 +1,4 @@
-package com.google.test.fragments;
+package com.google.test.ui.fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
@@ -8,11 +8,9 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,29 +20,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.test.R;
-import com.google.test.activities.SetAlarm;
+import com.google.test.ui.activities.SetAlarm;
 import com.google.test.cache.RoomCache;
 import com.google.test.handlers.EleHandler;
-import com.google.test.network.HttpUtil;
-
-import org.json.JSONObject;
+import com.google.test.json.EleJSONParser;
+import com.google.test.net.HttpUtil;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.List;
 
 /**
  * Created by 15119 on 2015/10/5.
  */
-public class ContentView extends Fragment implements OnClickListener {
+public class MainPageFragment extends Fragment implements OnClickListener,EleJSONParser.CallBack {
 
-    private final RoomCache roomCache = new RoomCache(getContext(), );
+    private final RoomCache roomCache = new RoomCache(getContext());
 
     private View mView;
 
-    private TextView mTvElectricity;
+    private TextView tv_electricity;
 
-    private TextView mTvAverage;
+    private TextView tv_average;
 
     private ProgressDialog progressDialog;
 
@@ -66,11 +62,11 @@ public class ContentView extends Fragment implements OnClickListener {
 
 
     private void initView(LayoutInflater inflater) {
-        mView = inflater.inflate(R.layout.main_content_view, null);
+        mView = inflater.inflate(R.layout.activity_main_main_page, null);
         ImageView setAlarm = (ImageView) mView.findViewById(R.id.set_alarm);
         setAlarm.setOnClickListener(this);
-        mTvElectricity = (TextView) mView.findViewById(R.id.electricity);
-        mTvAverage = (TextView) mView.findViewById(R.id.average);
+        tv_electricity = (TextView) mView.findViewById(R.id.electricity);
+        tv_average = (TextView) mView.findViewById(R.id.average);
     }
 
     @Override
@@ -81,6 +77,14 @@ public class ContentView extends Fragment implements OnClickListener {
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**e
+     * 等待子线程获取数据完毕后更新界面
+     */
+    @Override
+    public void updateUI() {
+
     }
 
     public void sendRequest() {

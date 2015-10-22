@@ -1,41 +1,51 @@
 package com.google.test.cache;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 /**
  * Created by 15119 on 2015/10/18.
  */
-public class RoomCache extends Cache{
+public class RoomInfo{
 
-    public RoomCache(Context context) {
-        super(context, "RoomInfo");
+    protected static SharedPreferences sharedPreferences;
+
+    private getInstance() {
+    return
     }
+}
 
-    public String getArea() {
+    protected SharedPreferences.Editor editor;
+
+    public Cache(Context context, String name) {
+        this.sharedPreferences = context.getSharedPreferences(name, 0);
+        editor = sharedPreferences.edit();
+
+    public static String getArea() {
        return sharedPreferences.getString("area", "");
     }
 
-    public String getBuild() {
+    public static String getBuild() {
         return sharedPreferences.getString("build", "");
     }
 
-    public String getRoom() {
+    public static String getRoom() {
         return sharedPreferences.getString("room", "");
     }
 
-    public void putArea(String area) {
+    public static void putArea(String area) {
         editor.putString("area", area);
     }
 
-    public void putBuild(String build) {
+    public static void putBuild(String build) {
         editor.putString("build", build);
     }
 
-    public void putRoom(String room) {
+    public static void putRoom(String room) {
         editor.putString("room", room);
     }
 
-    public void putEmail(String email) {
+    public static void putEmail(String email) {
         editor.putString("email", email);
     }
 

@@ -1,4 +1,4 @@
-package com.google.test.activities;
+package com.google.test.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -21,7 +21,7 @@ import java.net.URLEncoder;
 
 import com.google.test.R;
 import com.google.test.json.BaseJSONParser;
-import com.google.test.network.HttpUtil;
+import com.google.test.net.HttpUtil;
 
 /**
  * Created by 15119 on 2015/9/30.
@@ -39,7 +39,16 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void  onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.set_alarm);
+        init();
+
+    }
+
+    public void init() {
+        initView();
+    }
+
+    public void initView() {
+        setContentView(R.layout.activity_set_alarm);
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(this);
         notifyInput = (EditText) findViewById(R.id.notify_input);

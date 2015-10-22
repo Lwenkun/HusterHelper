@@ -1,5 +1,6 @@
 package com.google.test.json;
 
+import android.content.Context;
 import android.widget.Toast;
 
 import com.google.test.cache.DayInfo;
@@ -17,11 +18,11 @@ import java.util.List;
  */
 public class EleJSONParser extends BaseJSONParser {
 
-    public CallBack callBack;
+    private CallBack mCallBack;
 
     private List<DayInfo> daysInfo;
 
-    public EleJSONParser(JSONObject jsonObject) {
+    public EleJSONParser(Context context, JSONObject jsonObject) {
         super(jsonObject);
     }
 
@@ -36,9 +37,10 @@ public class EleJSONParser extends BaseJSONParser {
         try {
             String latest = mJSONObject.getJSONObject("data").getString("remain");
             if (latest.equals("null")) {
-                Toast.makeText(getActivity(), "查询电费失败了0.0", Toast.LENGTH_SHORT).show();
+                Toast.makeText(, "查询电费失败了0.0", Toast.LENGTH_SHORT).show();
             } else {
-                callback();
+
+                mCallBack.updateUI();
                 //
                 angle = Math.log10(Double.parseDouble(latest)) * 50;
                 //

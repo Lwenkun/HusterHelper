@@ -1,4 +1,4 @@
-package com.google.test.activities;
+package com.google.test.ui.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,7 +34,7 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.switcher);
+        setContentView(R.layout.activity_switch_dormitory);
         initView();
 }
 
@@ -45,7 +45,7 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
         Button bindEmail = (Button) findViewById(R.id.confirm);
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitory.this, R.layout.area_item, areaList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitory.this, R.layout.item_area, areaList);
         areaSelector.setAdapter(adapter);
         areaSelector.setOnItemSelectedListener(this);
         bindEmail.setOnClickListener(this);

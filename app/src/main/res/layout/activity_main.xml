@@ -9,9 +9,10 @@ android:orientation="vertical">
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <fragment
-            android:name="com.google.test.fragments.DefaultContentView"
+            android:name="com.google.test.ui.fragments.FirstUseFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/content_view" />
+            android:id="@+id/content_view"
+            tools:layout="@layout/activity_main_first_use" />
     </FrameLayout>
 </LinearLayout>

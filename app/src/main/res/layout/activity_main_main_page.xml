@@ -109,7 +109,7 @@
                 android:textColor="@color/grayHint"
                 android:paddingRight="0dp"
                 android:gravity="center_vertical"/>
-            <com.google.test.customViews.RecentElectricity
+            <com.google.test.ui.customviews.RecentElectricity
                 android:id="@+id/show_recent_electricity"
                 android:orientation="vertical"
                 android:layout_width="match_parent"

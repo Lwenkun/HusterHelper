@@ -1,4 +1,4 @@
-package com.google.test.activities;
+package com.google.test.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,7 +31,7 @@ public class BindEmail extends Activity implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fill_email);
+        setContentView(R.layout.activity_dialog_email);
         initView();
     }
 
