@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.test.R;
+import com.google.test.common.C;
 
 /**
  * Created by 15119 on 2015/9/30.
@@ -84,7 +85,7 @@ public class BindEmail extends Activity implements View.OnClickListener{
     public void sendEmail() {
     	String email = emailInput.getText().toString();
         if(email.equals("")) {
-        	Toast.makeText(BindEmail.this, "邮箱不可以为空哦", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(BindEmail.this, C.notice.EMAIL_NO_EMPTY, Toast.LENGTH_SHORT).show();
         }else {
             roomInfo.edit().putString("email", email).apply();
             Intent intent = new Intent();

@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.test.R;
+import com.google.test.common.C;
 
 /**
  * Created by 15119 on 2015/9/30.
@@ -29,7 +30,7 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
 
     private int position;
 
-    private final String[] areaList = {"东区", "西区" , "韵苑", "紫菘"};
+    private final String[] areaList = C.AREA_LIST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,11 +98,11 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
 
         if(buildNum.isEmpty()){
 
-            Toast.makeText(SwitchDormitory.this, "楼栋号不可以为空哦~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitory.this, C.notice.BUILD_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
 
         }else if(roomNum.isEmpty()){
 
-            Toast.makeText(SwitchDormitory.this, "寝室号不可以为空哦~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitory.this, C.notice.ROOM_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
 
         }else {
 

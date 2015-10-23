@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import com.google.test.R;
+import com.google.test.common.C;
 import com.google.test.json.BaseJSONParser;
 import com.google.test.net.HttpUtil;
 
@@ -102,16 +103,16 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
                         showDialogNotice();
                         break;
                     case 402:
-                        Toast.makeText(SetAlarm.this, "输入错误，请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarm.this, C.notice.INPUT_ERROR, Toast.LENGTH_SHORT).show();
                         break;
                     case 400:
-                        Toast.makeText(SetAlarm.this, "邮箱绑定失败，请稍后重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_BIND_FAILED, Toast.LENGTH_SHORT).show();
                         break;
                     case 410:
                         if (ifBindEmail) {
-                            Toast.makeText(SetAlarm.this, "亲，该邮箱已经绑定过了哦~", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetAlarm.this, C.notice.EMAIL_ALREADY_BINDED, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(SetAlarm.this, "亲，邮箱还未绑定呢~", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetAlarm.this, C.notice.EMAIL_HASNOT_BINDED, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     default:
@@ -132,7 +133,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
                     ifBindEmail = data.getBooleanExtra("ifBindEmail",true);
                     progressDialog = new ProgressDialog(SetAlarm.this);
                     progressDialog.setCancelable(false);
-                    progressDialog.setMessage("正在发送证邮件，请稍后...");
+                    progressDialog.setMessage(C.notice.EMAIL_BEING_SENT);
                     progressDialog.show();
                     sendRequest();
                 }
@@ -146,11 +147,11 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
         AlertDialog.Builder dialog = new AlertDialog.Builder(SetAlarm.this);
         dialog.setTitle("Note:");
         if(ifBindEmail) {
-            dialog.setMessage("已经发送了一封绑定确认邮件到你的邮箱中");
+            dialog.setMessage(C.notice.EMAIL_BINDED_SENT);
         } else {
-            dialog.setMessage("已经发送了一封解绑确认邮件到你的邮箱中");
+            dialog.setMessage(C.notice.EMAIL_UNBINDED_SENT);
         }
-        dialog.setPositiveButton("我知道了",null);
+        dialog.setPositiveButton(C.notice.I_KNOW,null);
         dialog.show();
     }
 }
