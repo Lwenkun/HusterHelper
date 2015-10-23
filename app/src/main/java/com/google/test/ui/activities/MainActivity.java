@@ -16,7 +16,7 @@ import com.google.test.R;
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
     }
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
 
     public void initView() {
 
-        loadContentView();
+        setContentView(R.layout.activity_main);
 
         TextView back = (TextView) findViewById(R.id.back);
         TextView switcher = (TextView) findViewById(R.id.switcher);
@@ -48,32 +48,6 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 startActivityForResult(intent, 1);
                 break;
         }
-    }
-
-    private void loadContentView() {
-
-        View view;
-
-        //这里判断网络状态
-        if (! isNetworkAvailable()) {
-
-            view = LayoutInflater.from(this).inflate(R.layout.activity_main_no_network, null);
-
-        } else if (getSharedPreferences("RoomInfo", MODE_PRIVATE) == null) {
-
-           view = LayoutInflater.from(this).inflate(R.layout.activity_main_first_use, null);
-        } else {
-
-            view = LayoutInflater.from(this).inflate(R.layout.activity_main_main_page, null);
-        }
-
-        setContentView(view);
-	}
-
-    public boolean isNetworkAvailable() {
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return manager.getActiveNetworkInfo().isAvailable();
-
     }
 
 	@Override

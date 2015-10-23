@@ -1,40 +1,23 @@
 package com.google.test.ui.fragments;
 
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.test.R;
 import com.google.test.ui.activities.SetAlarm;
-import com.google.test.cache.RoomCache;
-import com.google.test.handlers.EleHandler;
-import com.google.test.json.EleJSONParser;
-import com.google.test.net.HttpUtil;
-
-import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Created by 15119 on 2015/10/5.
  */
-public class MainPageFragment extends Fragment implements OnClickListener,EleJSONParser.CallBack {
-
-    private final RoomCache roomCache = new RoomCache(getContext());
+/*public class MainPageFragment extends Fragment implements OnClickListener {
 
     private View mView;
 
@@ -61,14 +44,6 @@ public class MainPageFragment extends Fragment implements OnClickListener,EleJSO
 
 
 
-    private void initView(LayoutInflater inflater) {
-        mView = inflater.inflate(R.layout.activity_main_main_page, null);
-        ImageView setAlarm = (ImageView) mView.findViewById(R.id.set_alarm);
-        setAlarm.setOnClickListener(this);
-        tv_electricity = (TextView) mView.findViewById(R.id.electricity);
-        tv_average = (TextView) mView.findViewById(R.id.average);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -79,9 +54,7 @@ public class MainPageFragment extends Fragment implements OnClickListener,EleJSO
         }
     }
 
-    /**e
-     * 等待子线程获取数据完毕后更新界面
-     */
+
     @Override
     public void updateUI() {
 
@@ -178,5 +151,70 @@ public class MainPageFragment extends Fragment implements OnClickListener,EleJSO
             canvas.drawArc(oval, -90, (float) angle, false, p);
         }
     }
+
+}*/
+public class MainPageFragment extends Fragment implements View.OnClickListener {
+
+    private Context mContext;
+
+    private TextView tv_electricity;
+
+    private TextView tv_average;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mContext = getContext();
+        refresh();
+        return loadContentView(inflater);
+    }
+
+    public View loadContentView(LayoutInflater inflater) {
+
+        View view;
+
+        if (! isNetworkAvailable()) {
+
+            view = inflater.inflate(R.layout.activity_main_no_network, null);
+
+        } else if (getContext().getSharedPreferences("RoomInfo", 0) == null) {
+
+            view = inflater.inflate(R.layout.activity_main_first_use, null);
+        } else {
+            view = inflater.inflate(R.layout.activity_main_main_page, null);
+            initView(view);
+        }
+
+        return view;
+    }
+
+    public boolean isNetworkAvailable() {
+
+        ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return manager.getActiveNetworkInfo().isAvailable();
+    }
+
+    private void initView(View view) {
+
+        ImageView iv_setAlarm = (ImageView) view.findViewById(R.id.set_alarm);
+        iv_setAlarm.setOnClickListener(this);
+        tv_electricity = (TextView) view.findViewById(R.id.electricity);
+        tv_average = (TextView) view.findViewById(R.id.average);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.set_alarm:
+                Intent intent = new Intent(getActivity(), SetAlarm.class);
+                startActivity(intent);
+                break;
+        }
+    }
+
+    public void sendRequest() {
+
+    }
+
 
 }
