@@ -5,14 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.test.R;
+import com.google.test.cache.DayInfo;
+import com.google.test.common.C;
+import com.google.test.handlers.EleHandler;
+import com.google.test.json.CallBack;
+import com.google.test.net.AnsynHttpRequest;
 import com.google.test.ui.activities.SetAlarm;
+
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by 15119 on 2015/10/5.
@@ -153,7 +168,7 @@ import com.google.test.ui.activities.SetAlarm;
     }
 
 }*/
-public class MainPageFragment extends Fragment implements View.OnClickListener {
+public class MainPageFragment extends Fragment implements View.OnClickListener, CallBack {
 
     private Context mContext;
 
@@ -165,7 +180,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         mContext = getContext();
-        refresh();
+     //   refresh();
         return loadContentView(inflater);
     }
 
@@ -181,7 +196,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             view = inflater.inflate(R.layout.activity_main_first_use, null);
         } else {
-            view = inflater.inflate(R.layout.activity_main_main_page, null);
+            view = inflater.inflate(R.layout.fragment_main_page, null);
             initView(view);
         }
 
@@ -212,8 +227,67 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void sendRequest() {
+    @Override
+    public void updateUI(String response) {
 
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format2 = new SimpleDateFormat("EEEE");
+        SimpleDateFormat format3 = new SimpleDateFormat("MM月dd日");
+
+        List<DayInfo> daysInfo = new ArrayList<>();
+        try {
+            JSONObject jResponse = new JSONObject(response);
+            int code = jResponse.getInt("code");
+            String latest = jResponse.getJSONObject("data").getString("remain");
+            if (latest.equals("null")) {
+                Toast.makeText(mContext, C.notice.FAIL_TO_GET_REMAINING_ELECTRICITY, Toast.LENGTH_SHORT).show();
+            } else {
+
+
+//                angle = Math.log10(Double.parseDouble(latest)) * 50;
+//
+//                drawCircle(1);
+//
+//                mTvElectricity.setText(latest);
+
+
+                JSONObject recent = jResponse.getJSONObject("data").getJSONObject("recent");
+                Iterator<String> jStrings = recent.keys();
+
+                while (jStrings.hasNext()) {
+
+                    //获取下一个JSON对象
+                    String jString = jStrings.next();
+                    JSONObject jDayInfo = recent.getJSONObject(jString);
+
+                    //获取每天的更新日期和剩余电量
+                    Date date = format1.parse(jDayInfo.getString("updated_at"));
+                    String weekday = format2.format(date);
+                    String sDate = format3.format(date);
+                    float electricity = Float.parseFloat(jDayInfo.getString("dianfei"));
+
+                    //根据获取的信息组装一个dayInfo对象
+                    DayInfo dayInfo = new DayInfo(weekday, sDate, electricity);
+                    daysInfo.add(dayInfo);
+                }
+
+                Message msg = new Message();
+                msg.what = code;
+                msg.obj = daysInfo;
+
+                EleHandler handler = new EleHandler(mContext);
+                handler.sendMessage(msg);
+//                float range = calRange();
+//                mTvAverage.setText(String.format("%.2f", range / 6));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void sendRequest() {
+        AnsynHttpRequest.doGetRequest(mContext, null, C.url.GET_ELECTRICITY, true, this);
     }
 
 

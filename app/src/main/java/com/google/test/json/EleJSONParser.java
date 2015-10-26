@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class EleJSONParser extends BaseJSONParser {
 
-    private CallBack mCallBack;
-
     private List<DayInfo> daysInfo;
 
     public EleJSONParser(Context context, JSONObject jsonObject) {
@@ -27,7 +25,7 @@ public class EleJSONParser extends BaseJSONParser {
     }
 
     @Override
-    public void parseJSONForDetail(){
+    public void parseJSONForDetail() {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat format2 = new SimpleDateFormat("EEEE");
@@ -40,12 +38,11 @@ public class EleJSONParser extends BaseJSONParser {
                 Toast.makeText(, "查询电费失败了0.0", Toast.LENGTH_SHORT).show();
             } else {
 
-                mCallBack.updateUI();
-                //
+
                 angle = Math.log10(Double.parseDouble(latest)) * 50;
-                //
+
                 drawCircle(1);
-                //
+
                 mTvElectricity.setText(latest);
 
                 JSONObject recent = mJSONObject.getJSONObject("data").getJSONObject("recent");

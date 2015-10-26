@@ -46,6 +46,7 @@ public class MyRunnable implements Runnable{
             Log.d("test", "URL Transformation error");
         }
 
+        //参数组装
         if(map != null) {
             StringBuilder paramsBuilder = new StringBuilder(url);
 

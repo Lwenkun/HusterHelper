@@ -5,9 +5,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.google.test.json.EleJSONParser;
+import com.google.test.cache.DayInfo;
+import com.google.test.cache.DaysInfoCache;
 
-import org.json.JSONObject;
+import java.util.List;
 
 
 /**
@@ -17,33 +18,35 @@ public class EleHandler extends Handler {
 
     private Context mContext;
 
+    private List<DayInfo> daysInfo;
+
     public EleHandler(Context context) {
         mContext = context;
     }
 
 
-
     @Override
     public void handleMessage(Message msg) {
 
-        EleJSONParser parser = new EleJSONParser((JSONObject) msg.obj);
-
-        switch (parser.parseJSONForCode()) {
+        switch (msg.what) {
             case 200:
-                parser.parseJSONForDetail();
+                DaysInfoCache.init(mContext);
+                DaysInfoCache.putDaysInfo((List<DayInfo>) msg.obj);
                 break;
+
             case 402:
                 Toast.makeText(mContext, "很抱歉，没有该寝室的信息", Toast.LENGTH_SHORT).show();
                 break;
+
             case 400:
                 Toast.makeText(mContext, "操作错误，请稍后重试", Toast.LENGTH_SHORT).show();
                 break;
+
             case 500:
                 Toast.makeText(mContext, "服务器发生未知错误", Toast.LENGTH_SHORT).show();
                 break;
-            default:
-                break;
         }
     }
+
 
 }

@@ -11,13 +11,18 @@ import android.view.View;
 
 import com.google.test.cache.DayInfo;
 import com.google.test.cache.DaysInfoCache;
+import com.google.test.ui.ViewRefresher;
 
 import java.util.List;
 
 /**
  * Created by 15119 on 2015/10/18.
  */
-public class RecentElectricity extends View {
+
+//daysInfo
+public class RecentElectricity extends View implements ViewRefresher{
+
+    private Context context;
 
     private List<DayInfo> daysInfo;
 
@@ -31,11 +36,11 @@ public class RecentElectricity extends View {
 
     private float interval;
 
-    private float k;
-
     private int r;
 
     private float[] Y;
+
+    private float maxElectricity;
 
     private int position = 6;
 
@@ -45,9 +50,55 @@ public class RecentElectricity extends View {
 
     public RecentElectricity(Context context, AttributeSet attrs) {
         super(context, attrs);
-        daysInfo = new DaysInfoCache(context).getDaysInfo();
+        this.context = context;
         p.setAntiAlias(true);
         initData();
+    }
+
+    public void initData() {
+
+        //获得最近电量数据
+        DaysInfoCache.init(context);
+        daysInfo = DaysInfoCache.getDaysInfo();
+
+        //获取画布的宽和高
+        canvasH = getHeight();
+        canvasW = getWidth();
+
+        //最近电量显示中的大圆半径
+        r = canvasH / 4;
+
+        //设置最近电量显示图中两点间的间隔
+        interval = (canvasW - 2 * r) / 6;
+
+        //大圆的圆心坐标
+        circleX = new float[7];
+        circleY = new float[7];
+
+        //计算大圆的横坐标
+        for (int i = 0; i <= 6; i++) {
+            circleX[i] = r + i * interval;
+        }
+
+        //计算图像缩放系数，这里将曲线范围缩放成区域高度的2/5
+        float k = (canvasH * 2 / 5) / maxElectricity;
+
+        //曲线上表示最近电量的点的坐标
+        Y = new float[7];
+        for (int i = 0; i <= 6; i++) {
+            Y[6 - i] = canvasH - daysInfo.get(i).getElectricity() * k;
+        }
+
+        //计算大圆的纵坐标
+        for (int i = 0; i <= 6; i++) {
+            circleY[i] = Y[i] - r - 50;
+        }
+    }
+
+    //刷新view
+    @Override
+    public void refreshView() {
+        invalidate();
     }
 
     @Override
@@ -114,25 +165,6 @@ public class RecentElectricity extends View {
         return e[6] - e[0];
     }
 
-    public void initData() {
-        Y = new float[7];
-        circleX = new float[7];
-        circleY = new float[7];
-        canvasH = getHeight();
-        canvasW = getWidth();
-        r = canvasH / 4;
-        interval = (canvasW - 2 * r) / 6;
-        for (int i = 0; i <= 6; i++) {
-            circleX[i] = r + i * interval;
-        }
-        k = (canvasH * 2 / 5) / maxElectricity;
-        for (int i = 0; i <= 6; i++) {
-            Y[6 - i] = canvasH - daysInfo.get(i).getElectricity() * k;
-        }
-        for (int i = 0; i <= 6; i++) {
-            circleY[i] = Y[i] - r - 50;
-        }
-    }
 }
 
 

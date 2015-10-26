@@ -7,12 +7,14 @@ public class C {
 
     public static final class url{
 
-        public static final String URL_GET_ELECTRICITY = "http://api.hustonline.net/dianfei?";
+        public static final String GET_ELECTRICITY = "http://api.hustonline.net/dianfei?";
 
-        public static final String URL_POST_EMAIL = "http://api.hustonline.net/dianfei/notify";
+        public static final String POST_EMAIL = "http://api.hustonline.net/dianfei/notify";
     }
 
     public static final class notice{
+
+        public static final String FAIL_TO_GET_REMAINING_ELECTRICITY = "查询电费失败了O.O";
 
         public static final String EMAIL_NO_EMPTY = "邮箱不可以为空哦";
 

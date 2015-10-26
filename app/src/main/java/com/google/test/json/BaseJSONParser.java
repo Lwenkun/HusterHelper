@@ -9,18 +9,16 @@ public abstract class BaseJSONParser {
 
     protected JSONObject mJSONObject;
 
-    public BaseJSONParser(JSONObject jsonObject) {
-        mJSONObject = jsonObject;
-    }
+    public BaseJSONParser(String sJSON) {
 
-    public int parseJSONForCode() {
         try {
-            return mJSONObject.getInt("code");
-        }catch (Exception e) {
+            mJSONObject = new JSONObject(sJSON);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return 0;
     }
+
+
 
     public abstract void parseJSONForDetail();
 }
