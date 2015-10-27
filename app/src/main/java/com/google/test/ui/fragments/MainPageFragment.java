@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,12 @@ import android.widget.Toast;
 
 import com.google.test.R;
 import com.google.test.cache.DayInfo;
+import com.google.test.cache.DaysInfoCache;
 import com.google.test.common.C;
-import com.google.test.handlers.EleHandler;
 import com.google.test.json.CallBack;
 import com.google.test.net.AnsynHttpRequest;
 import com.google.test.ui.activities.SetAlarm;
+import com.google.test.ui.customviews.RecentElectricity;
 
 import org.json.JSONObject;
 
@@ -170,11 +172,41 @@ import java.util.List;
 }*/
 public class MainPageFragment extends Fragment implements View.OnClickListener, CallBack {
 
-    private Context mContext;
+    private static Context mContext;
+
+    private static final RecentElectricity = new RecentElectricity();
 
     private TextView tv_electricity;
 
     private TextView tv_average;
+
+    private MyHandler mHandler = new MyHandler();
+
+    private static class MyHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case 200:
+                    DaysInfoCache.init(mContext);
+                    DaysInfoCache.putDaysInfo((List<DayInfo>) msg.obj);
+                    break;
+
+                case 402:
+                    Toast.makeText(mContext, "很抱歉，没有该寝室的信息", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 400:
+                    Toast.makeText(mContext, "操作错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case 500:
+                    Toast.makeText(mContext, "服务器发生未知错误", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -248,8 +280,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 //
 //                drawCircle(1);
 //
-//                mTvElectricity.setText(latest);
-
+                tv_electricity.setText(latest);
 
                 JSONObject recent = jResponse.getJSONObject("data").getJSONObject("recent");
                 Iterator<String> jStrings = recent.keys();
@@ -275,8 +306,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 msg.what = code;
                 msg.obj = daysInfo;
 
-                EleHandler handler = new EleHandler(mContext);
-                handler.sendMessage(msg);
+                mHandler.sendMessage(msg);
 //                float range = calRange();
 //                mTvAverage.setText(String.format("%.2f", range / 6));
             }
@@ -289,6 +319,5 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     public void sendRequest() {
         AnsynHttpRequest.doGetRequest(mContext, null, C.url.GET_ELECTRICITY, true, this);
     }
-
 
 }

@@ -1,12 +1,9 @@
 package com.google.test.ui.activities;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -55,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     	switch (requestCode) {
     	case 1:
     		if (resultCode == RESULT_OK) {
-                refresh();
+     //           refresh();
 //    			reloadContentView
     		}
     		break;

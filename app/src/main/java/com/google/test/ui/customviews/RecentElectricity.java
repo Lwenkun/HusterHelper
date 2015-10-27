@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -20,7 +19,7 @@ import java.util.List;
  */
 
 //daysInfo
-public class RecentElectricity extends View implements ViewRefresher{
+public class RecentElectricity extends View implements ViewRefresher {
 
     private Context context;
 
@@ -48,17 +47,23 @@ public class RecentElectricity extends View implements ViewRefresher{
 
     private int canvasW;
 
-    public RecentElectricity(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public RecentElectricity(Context context) {
+        super(context);
         this.context = context;
         p.setAntiAlias(true);
+        DaysInfoCache.init(context);
+
+        //大圆的圆心坐标
+        circleX = new float[7];
+        circleY = new float[7];
+
+        //初始化数据
         initData();
     }
 
     public void initData() {
 
         //获得最近电量数据
-        DaysInfoCache.init(context);
         daysInfo = DaysInfoCache.getDaysInfo();
 
         //获取画布的宽和高
@@ -70,10 +75,6 @@ public class RecentElectricity extends View implements ViewRefresher{
 
         //设置最近电量显示图中两点间的间隔
         interval = (canvasW - 2 * r) / 6;
-
-        //大圆的圆心坐标
-        circleX = new float[7];
-        circleY = new float[7];
 
         //计算大圆的横坐标
         for (int i = 0; i <= 6; i++) {
@@ -98,6 +99,7 @@ public class RecentElectricity extends View implements ViewRefresher{
     //刷新view
     @Override
     public void refreshView() {
+        initData();
         invalidate();
     }
 
@@ -147,6 +149,7 @@ public class RecentElectricity extends View implements ViewRefresher{
         return true;
     }
 
+    //计算出用电量的范围
     public float calRange() {
 
         float[] e = new float[7];
