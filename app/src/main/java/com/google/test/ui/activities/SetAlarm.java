@@ -14,20 +14,20 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.net.URLEncoder;
-
 import com.google.test.R;
 import com.google.test.common.C;
-import com.google.test.json.BaseJSONParser;
-import com.google.test.net.HttpUtil;
+import com.google.test.json.CallBack;
+import com.google.test.net.AnsynHttpRequest;
+
+import org.json.JSONObject;
+
+import java.net.URLEncoder;
+import java.util.HashMap;
 
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
+public class SetAlarm extends AppCompatActivity implements View.OnClickListener, CallBack{
 
     private EditText notifyInput;
 
@@ -36,6 +36,36 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
     private boolean ifBindEmail;
 
     private ProgressDialog progressDialog;
+
+    private MyHandler mHandler = new MyHandler();
+
+    private class MyHandler extends Handler {
+
+        @Override
+        public void handleMessage(Message msg) {
+            progressDialog.dismiss();
+            switch (msg.what) {
+                case 200:
+                    showDialogNotice();
+                    break;
+                case 402:
+                    Toast.makeText(SetAlarm.this, C.notice.INPUT_ERROR, Toast.LENGTH_SHORT).show();
+                    break;
+                case 400:
+                    Toast.makeText(SetAlarm.this, C.notice.EMAIL_BIND_FAILED, Toast.LENGTH_SHORT).show();
+                    break;
+                case 410:
+                    if (ifBindEmail) {
+                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_ALREADY_BINDED, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_HASNOT_BINDED, Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     @Override
     public void  onCreate(Bundle savedInstanceState) {
@@ -70,7 +100,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    public void sendRequest() {
+  /*  public void sendRequest() {
         SharedPreferences roomInfo = getSharedPreferences("RoomInfo",MODE_PRIVATE);
         String area = roomInfo.getString("area", "");
         String buildNum = roomInfo.getString("buildNum", "");
@@ -122,6 +152,40 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener{
         });
         HttpUtil.sendRequest();
 
+    }*/
+
+    public void sendRequest() {
+
+        HashMap<String, String> params = new HashMap<>();
+        SharedPreferences roomInfo = getSharedPreferences("RoomInfo", MODE_PRIVATE);
+        try {
+            params.put("area", URLEncoder.encode(roomInfo.getString("area", ""), "UTF-8")) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        params.put("build", roomInfo.getString("buildNum", ""));
+        params.put("room", roomInfo.getString("roomNum", ""));
+        params.put("email", email);
+        if (ifBindEmail) {
+            params.put("notify", notifyInput.getText().toString());
+            AnsynHttpRequest.doPostRequest(this, params, C.url.POST_EMAIL, false, this);
+        } else{
+            AnsynHttpRequest.doDeleteRequest(this, params, C.url.POST_EMAIL, false, this);
+        }
+    }
+
+    @Override
+    public void updateUI(String response) {
+        try {
+            JSONObject jResponse = new JSONObject(response);
+            int code = jResponse.getInt("code");
+            Message msg = new Message();
+            msg.what = code;
+            mHandler.sendMessage(msg);
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@ import com.google.test.common.C;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class SwitchDormitory extends AppCompatActivity implements View.OnClickListener,OnItemSelectedListener{
+public class SwitchDormitory extends AppCompatActivity implements View.OnClickListener, OnItemSelectedListener{
 
     private EditText buildNumInput;
 

@@ -2,6 +2,7 @@ package com.google.test.net;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.test.json.CallBack;
 
@@ -38,7 +39,8 @@ public class AnsynHttpRequest {
         //组装url
         for (String key : keySet) {
             if (isFirstParam) {
-                urlBuilder.append(key + "=" + map.get(key));
+                    urlBuilder.append(key + "=" + map.get(key));
+                Log.d("test4", "utf-8" + urlBuilder.toString());
                 isFirstParam = false;
             } else {
                 urlBuilder.append("&" + key + "=" + map.get(key));
@@ -47,6 +49,8 @@ public class AnsynHttpRequest {
 
         url = urlBuilder.toString();
 
+        Log.d("test4", url);
+
         doAnsynHttpRequest(context, "GET", null, url, showDialog, callBack);
     }
 
@@ -54,17 +58,18 @@ public class AnsynHttpRequest {
     public static void doPostRequest(Context context, HashMap<String, String> map, String url, boolean showDialog, CallBack callBack) {
 
         doAnsynHttpRequest(context, "POST", map, url, showDialog, callBack);
+        Log.d("test4", url);
     }
 
     //处理Delete请求
     public static void doDeleteRequest(Context context, HashMap<String, String> map, String url, boolean showDialog, CallBack callBack) {
 
-        doAnsynHttpRequest(context, "POST", map, url, showDialog, callBack);
+        doAnsynHttpRequest(context, "DELETE", map, url, showDialog, callBack);
     }
 
     //设置对话框
-    public static void  setDialog(ProgressDialog dialog) {
-       mDialog = dialog;
+    public static void setDialog(ProgressDialog dialog) {
+        mDialog = dialog;
     }
 
     //显示对话框

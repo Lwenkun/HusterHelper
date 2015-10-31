@@ -5,11 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.google.test.cache.DayInfo;
-import com.google.test.cache.DaysInfoCache;
+import com.google.test.data.DayInfo;
+import com.google.test.data.RecentData;
 import com.google.test.ui.ViewRefresher;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 
 //daysInfo
-public class RecentElectricity extends View implements ViewRefresher {
+public class DrawGraph extends View implements ViewRefresher {
 
     private Context context;
 
@@ -47,12 +49,13 @@ public class RecentElectricity extends View implements ViewRefresher {
 
     private int canvasW;
 
-    public RecentElectricity(Context context) {
-        super(context);
+    public DrawGraph(Context context, AttributeSet attrs) {
+        super(context, attrs);
         this.context = context;
         p.setAntiAlias(true);
-        DaysInfoCache.init(context);
+        RecentData.init(context);
 
+        Log.d("test4" ,"iamdrawing too");
         //大圆的圆心坐标
         circleX = new float[7];
         circleY = new float[7];
@@ -64,7 +67,7 @@ public class RecentElectricity extends View implements ViewRefresher {
     public void initData() {
 
         //获得最近电量数据
-        daysInfo = DaysInfoCache.getDaysInfo();
+        daysInfo = RecentData.getRecentData();
 
         //获取画布的宽和高
         canvasH = getHeight();
@@ -82,7 +85,7 @@ public class RecentElectricity extends View implements ViewRefresher {
         }
 
         //计算图像缩放系数，这里将曲线范围缩放成区域高度的2/5
-        float k = (canvasH * 2 / 5) / maxElectricity;
+        float k = (canvasH * 2 / 5) / RecentData.getData(RecentData.DATA_MAX_ELECTRICITY);
 
         //曲线上表示最近电量的点的坐标
         Y = new float[7];
@@ -106,22 +109,33 @@ public class RecentElectricity extends View implements ViewRefresher {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         p.setStyle(Paint.Style.FILL_AND_STROKE);
         p.setColor(Color.rgb(70, 222, 235));
+
+        //绘制起点到第一个点的直线
         path.moveTo(0, canvasH);
         path.lineTo(0, Y[0]);
         path.lineTo(r, Y[0]);
+
+        //绘制折线
         float startX = r;
         for (int i = 0; i <= 5; i++) {
             path.quadTo(startX + interval / 2 + 20, (Y[i + 1] + Y[i]) / 2, startX + interval, Y[i + 1]);
             startX += interval;
         }
+
+        //将路径闭合并填充颜色
         path.lineTo(canvasW, Y[6]);
         path.lineTo(canvasW, canvasH);
         path.close();
         canvas.drawPath(path, p);
+
+        //画大圆
         p.setStyle(Paint.Style.FILL);
         canvas.drawCircle(circleX[position], circleY[position], r, p);
+
+        //每日用电量的文字说明
         p.setColor(Color.WHITE);
         p.setTextSize(r / 4);
         p.setTextAlign(Paint.Align.CENTER);
@@ -130,6 +144,8 @@ public class RecentElectricity extends View implements ViewRefresher {
         canvas.drawText("kw-h", circleX[position], circleY[position] + r * 3 / 4, p);
         p.setTextSize(r / 3);
         canvas.drawText(String.valueOf(daysInfo.get(6 - position).getElectricity()), circleX[position], circleY[position] + r / 3, p);
+
+        //画小圆
         canvas.drawCircle(circleX[position], circleY[position] + r + 50, 35, p);
         p.setColor(Color.rgb(70, 222, 235));
         canvas.drawCircle(circleX[position], circleY[position] + r + 50, 30, p);
@@ -139,34 +155,23 @@ public class RecentElectricity extends View implements ViewRefresher {
     public boolean onTouchEvent(MotionEvent event) {
 
         float x = event.getX();
+
+        //判断手指点击位置
         position = (int) ((x - r + interval / 2) / interval);
+
+        //如果位置在0外侧，则置为0；在6外侧则置为6
         if (position < 0) {
             position = 0;
         } else if (position > 6) {
             position = 6;
         }
+
+        //重绘
         this.invalidate();
         return true;
     }
 
-    //计算出用电量的范围
-    public float calRange() {
 
-        float[] e = new float[7];
-        for (int i = 0; i <= 6; i++) {
-            e[i] = daysInfo.get(i).getElectricity();
-        }
-        for (int i = 0; i < 6; i++)
-            for (int j = 0; j < 6 - i; j++) {
-                if (e[j] > e[j + 1]) {
-                    float temp = e[j];
-                    e[j] = e[j + 1];
-                    e[j + 1] = temp;
-                }
-            }
-        maxElectricity = e[6];
-        return e[6] - e[0];
-    }
 
 }
 

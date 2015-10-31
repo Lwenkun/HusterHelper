@@ -1,4 +1,4 @@
-package com.google.test.cache;
+package com.google.test.data;
 
 /**
  * Created by 15119 on 2015/10/18.

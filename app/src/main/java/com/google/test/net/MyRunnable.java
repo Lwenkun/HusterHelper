@@ -11,14 +11,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Set;
 
 /**
  * Created by 15119 on 2015/10/23.
  */
-public class MyRunnable implements Runnable{
+public class MyRunnable implements Runnable {
 
     private Context context;
 
@@ -39,24 +38,23 @@ public class MyRunnable implements Runnable{
         this.map = map;
         this.callBack = callBack;
 
-        try{
-            this.url = new URL(URLEncoder.encode(url, "UTF-8"));
+        Log.d("MyRunnable", url);
+        try {
+            this.url = new URL(url);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("test", "URL Transformation error");
         }
-
+        
         //参数组装
-        if(map != null) {
-            StringBuilder paramsBuilder = new StringBuilder(url);
+        if (map != null) {
+            StringBuilder paramsBuilder = new StringBuilder();
 
-            map.keySet();
             Set<String> keySet = map.keySet();
 
             boolean isFirstParam = true;
 
-            for(String key : keySet) {
-                if(isFirstParam) {
+            for (String key : keySet) {
+                if (isFirstParam) {
                     paramsBuilder.append(key + "=" + map.get(key));
                     isFirstParam = false;
                 } else {
@@ -71,6 +69,7 @@ public class MyRunnable implements Runnable{
     @Override
     public void run() {
         HttpURLConnection connection = null;
+
         try {
 
             connection = (HttpURLConnection) url.openConnection();
@@ -81,31 +80,32 @@ public class MyRunnable implements Runnable{
             connection.setRequestMethod(requestMethod);
 
             //如果是POST或DELETE方法
-            if(params != null) {
+            if (params != null) {
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(params);
+                Log.d("MyRunnable", "params:" + params);
                 out.flush();
                 out.close();
             }
 
             //从服务器获取数据
             InputStream in = connection.getInputStream();
+            Log.d("MyRunnable", "in");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder response = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 response.append(line);
+                Log.d("MyRunnable", "response:" + response.toString());
+
             }
-            //Message message = new Message();
-            Log.d("test", "response:" + response.toString());
+
             callBack.updateUI(response.toString());
 
-//            JSONObject data = new JSONObject(response.toString());
-//            message.obj = data;
-//            mHandler.sendMessage(message);
-        }catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+            Log.d("MyRunnable", "Runnable error");
+        } finally {
             if (connection != null) {
                 connection.disconnect();
             }

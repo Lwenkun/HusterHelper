@@ -19,7 +19,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="5dp"
                 android:clickable="true"/>
-            <RelativeLayout
+            <com.google.test.ui.customviews.DrawCircle
                 android:id="@+id/show_electricity"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
@@ -40,7 +40,7 @@
                         android:gravity="bottom"
                         android:textColor="@color/grayText"
                         android:text="kw-h" />
-            </RelativeLayout>
+            </com.google.test.ui.customviews.DrawCircle>
             <TextView
                 android:id="@+id/notice"
                 android:layout_width="wrap_content"
@@ -109,12 +109,11 @@
                 android:textColor="@color/grayHint"
                 android:paddingRight="0dp"
                 android:gravity="center_vertical"/>
-            <LinearLayout
+            <com.google.test.ui.customviews.DrawGraph
                 android:id="@+id/show_recent_electricity"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
-            </LinearLayout>
-        </LinearLayout>
+                android:layout_weight="1"/>
+    </LinearLayout>
 </LinearLayout>

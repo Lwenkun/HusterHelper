@@ -1,6 +1,7 @@
 package com.google.test.ui.activities;
 
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.google.test.R;
+import com.google.test.ui.fragments.MainPageFragment;
 
 public class MainActivity extends AppCompatActivity implements OnClickListener {
 
@@ -52,8 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
     	switch (requestCode) {
     	case 1:
     		if (resultCode == RESULT_OK) {
-     //           refresh();
-//    			reloadContentView
+                FragmentManager fragmentManager = getFragmentManager();
+                MainPageFragment fragment = (MainPageFragment) fragmentManager.findFragmentById(R.id.fragment_container);
+                fragment.sendRequest();
     		}
     		break;
     	}

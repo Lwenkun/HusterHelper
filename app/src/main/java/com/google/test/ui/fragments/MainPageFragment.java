@@ -1,12 +1,14 @@
 package com.google.test.ui.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.test.R;
-import com.google.test.cache.DayInfo;
-import com.google.test.cache.DaysInfoCache;
 import com.google.test.common.C;
+import com.google.test.data.DayInfo;
+import com.google.test.data.RecentData;
 import com.google.test.json.CallBack;
 import com.google.test.net.AnsynHttpRequest;
 import com.google.test.ui.activities.SetAlarm;
-import com.google.test.ui.customviews.RecentElectricity;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -172,9 +174,7 @@ import java.util.List;
 }*/
 public class MainPageFragment extends Fragment implements View.OnClickListener, CallBack {
 
-    private static Context mContext;
-
-    private static final RecentElectricity = new RecentElectricity();
+    private Activity mActivity;
 
     private TextView tv_electricity;
 
@@ -182,64 +182,77 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
     private MyHandler mHandler = new MyHandler();
 
-    private static class MyHandler extends Handler {
+    private class MyHandler extends Handler {
 
         @Override
         public void handleMessage(Message msg) {
 
             switch (msg.what) {
                 case 200:
-                    DaysInfoCache.init(mContext);
-                    DaysInfoCache.putDaysInfo((List<DayInfo>) msg.obj);
+                    RecentData.init(mActivity);
+                    RecentData.putRecentData((List<DayInfo>) msg.obj);
+                    draw();
+                    tv_electricity.setText("11");
+                    tv_average.setText(String.valueOf(RecentData.getData(RecentData.AVERAGE)));
                     break;
 
                 case 402:
-                    Toast.makeText(mContext, "很抱歉，没有该寝室的信息", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "很抱歉，没有该寝室的信息", Toast.LENGTH_SHORT).show();
                     break;
 
                 case 400:
-                    Toast.makeText(mContext, "操作错误，请稍后重试", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "操作错误，请稍后重试", Toast.LENGTH_SHORT).show();
                     break;
 
                 case 500:
-                    Toast.makeText(mContext, "服务器发生未知错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "服务器发生未知错误", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
-    };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mContext = getContext();
-     //   refresh();
-        return loadContentView(inflater);
+        mActivity = getActivity();
+       // refresh();
+        sendRequest();
+        return loadContentView(inflater, container);
     }
 
-    public View loadContentView(LayoutInflater inflater) {
+    public View loadContentView(LayoutInflater inflater, ViewGroup container) {
 
         View view;
 
-        if (! isNetworkAvailable()) {
+        Log.d("MainPageFragment", "loadContentView");
 
-            view = inflater.inflate(R.layout.activity_main_no_network, null);
+//        if (isNetworkAvailable()) {
+//
+//            view = inflater.inflate(R.layout.activity_main_no_network, container, false);
+//
+//        } else if ("".equals(mActivity.getSharedPreferences("RoomInfo", Context.MODE_PRIVATE).getString("area", ""))) {
+//
+//            view = inflater.inflate(R.layout.activity_main_first_use, container, false);
+//        } else {
 
-        } else if (getContext().getSharedPreferences("RoomInfo", 0) == null) {
-
-            view = inflater.inflate(R.layout.activity_main_first_use, null);
-        } else {
-            view = inflater.inflate(R.layout.fragment_main_page, null);
+            view = inflater.inflate(R.layout.fragment_main_page, container, false);
             initView(view);
-        }
+//        }
 
         return view;
     }
 
-    public boolean isNetworkAvailable() {
-
-        ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return manager.getActiveNetworkInfo().isAvailable();
-    }
+//    public boolean isNetworkAvailable() {
+//
+//        ConnectivityManager manager = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+//        if (manager.getActiveNetworkInfo().isAvailable() && manager.getActiveNetworkInfo().isConnected()) return true;
+//        return false;
+//    }
 
     private void initView(View view) {
 
@@ -261,26 +274,24 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void updateUI(String response) {
-
+        Log.d("MainPageFragment", "i am here");
+        Log.d("MainPageFragment", response);
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat format2 = new SimpleDateFormat("EEEE");
         SimpleDateFormat format3 = new SimpleDateFormat("MM月dd日");
 
         List<DayInfo> daysInfo = new ArrayList<>();
         try {
+
+            //获得状态码和最近电量
             JSONObject jResponse = new JSONObject(response);
             int code = jResponse.getInt("code");
             String latest = jResponse.getJSONObject("data").getString("remain");
+
             if (latest.equals("null")) {
-                Toast.makeText(mContext, C.notice.FAIL_TO_GET_REMAINING_ELECTRICITY, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, C.notice.FAIL_TO_GET_REMAINING_ELECTRICITY, Toast.LENGTH_SHORT).show();
             } else {
-
-
-//                angle = Math.log10(Double.parseDouble(latest)) * 50;
-//
-//                drawCircle(1);
-//
-                tv_electricity.setText(latest);
+                Log.d("MainPageFragment", "i am here,too");
 
                 JSONObject recent = jResponse.getJSONObject("data").getJSONObject("recent");
                 Iterator<String> jStrings = recent.keys();
@@ -307,8 +318,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
                 msg.obj = daysInfo;
 
                 mHandler.sendMessage(msg);
-//                float range = calRange();
-//                mTvAverage.setText(String.format("%.2f", range / 6));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,7 +326,27 @@ public class MainPageFragment extends Fragment implements View.OnClickListener, 
     }
 
     public void sendRequest() {
-        AnsynHttpRequest.doGetRequest(mContext, null, C.url.GET_ELECTRICITY, true, this);
+        SharedPreferences roomInfo =  mActivity.getSharedPreferences("RoomInfo", Context.MODE_PRIVATE);
+        HashMap<String, String> params = new HashMap<>();
+        params.put("area", roomInfo.getString("area", ""));
+        params.put("room",  roomInfo.getString("roomNum", ""));
+        params.put("build", roomInfo.getString("buildNum", ""));
+        AnsynHttpRequest.doGetRequest(mActivity, params, C.url.GET_ELECTRICITY, false, this);
+    }
+
+    public void draw() {
+        drawCircles();
+        drawGraph();
+    }
+
+    public void drawCircles() {
+        ViewGroup circleView = (ViewGroup) mActivity.findViewById(R.id.show_electricity);
+        circleView.invalidate();
+    }
+
+    public void drawGraph() {
+        View graph = mActivity.findViewById(R.id.show_recent_electricity);
+        graph.invalidate();
     }
 
 }
