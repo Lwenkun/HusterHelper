@@ -18,13 +18,13 @@ import com.google.test.common.C;
  */
 public class BindEmail extends Activity implements View.OnClickListener{
 
-    private EditText emailInput;
+    private EditText et_emailInput;
     
     private boolean ifBindEmail = true;
 
-    private TextView bindEmail;
+    private TextView tv_bindEmail;
 
-    private TextView unbindEmail;
+    private TextView tv_unbindEmail;
 
     private SharedPreferences roomInfo;
 
@@ -37,27 +37,29 @@ public class BindEmail extends Activity implements View.OnClickListener{
     }
 
     public void initView() {
-        emailInput = (EditText) findViewById(R.id.email_input);
-        Button cancel = (Button) findViewById(R.id.cancel);
-        Button confirm = (Button) findViewById(R.id.confirm);
-        bindEmail = (TextView) findViewById(R.id.bind_email);
-        unbindEmail = (TextView) findViewById(R.id.unbind_email);
-        bindEmail.setOnClickListener(this);
-        unbindEmail.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        confirm.setOnClickListener(this);
-        TextView areaText = (TextView) findViewById(R.id.area);
-        TextView buildNumText = (TextView) findViewById(R.id.buildNum);
-        TextView roomNumText = (TextView) findViewById(R.id.roomNum);
+
+
+        et_emailInput = (EditText) findViewById(R.id.email_input);
+        Button btn_cancel = (Button) findViewById(R.id.cancel);
+        Button btn_confirm = (Button) findViewById(R.id.confirm);
+        tv_bindEmail = (TextView) findViewById(R.id.bind_email);
+        tv_unbindEmail = (TextView) findViewById(R.id.unbind_email);
+        tv_bindEmail.setOnClickListener(this);
+        tv_unbindEmail.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
+        btn_confirm.setOnClickListener(this);
+        TextView tv_areaText = (TextView) findViewById(R.id.area);
+        TextView tv_buildNumText = (TextView) findViewById(R.id.buildNum);
+        TextView tv_roomNumText = (TextView) findViewById(R.id.roomNum);
         roomInfo = getSharedPreferences("RoomInfo",MODE_PRIVATE);
         String area = roomInfo.getString("area", "");
         String buildNum = roomInfo.getString("buildNum", "");
         String roomNum = roomInfo.getString("roomNum", "");
         String email = roomInfo.getString("email", "");
-        emailInput.setText(email);
-        areaText.setText(area);
-        buildNumText.setText(buildNum);
-        roomNumText.setText(roomNum);
+        et_emailInput.setText(email);
+        tv_areaText.setText(area);
+        tv_buildNumText.setText(buildNum);
+        tv_roomNumText.setText(roomNum);
     }
 
     @Override
@@ -70,23 +72,27 @@ public class BindEmail extends Activity implements View.OnClickListener{
             	sendEmail();
                 break;
             case R.id.bind_email:
-                bindEmail.setTextColor(getResources().getColor(R.color.mainColor));
-                unbindEmail.setTextColor(getResources().getColor(R.color.grayText));
+                tv_bindEmail.setTextColor(getResources().getColor(R.color.mainColor));
+                tv_unbindEmail.setTextColor(getResources().getColor(R.color.grayText));
             	ifBindEmail = true;
             	break;
             case R.id.unbind_email:
-                bindEmail.setTextColor(getResources().getColor(R.color.grayText));
-                unbindEmail.setTextColor(getResources().getColor(R.color.mainColor));
+
+                //改变字体颜色提示用户当前操作方式
+                tv_bindEmail.setTextColor(getResources().getColor(R.color.grayText));
+                tv_unbindEmail.setTextColor(getResources().getColor(R.color.mainColor));
             	ifBindEmail = false;
             	break;
         }
     }
 
     public void sendEmail() {
-    	String email = emailInput.getText().toString();
+    	String email = et_emailInput.getText().toString();
         if(email.equals("")) {
         	Toast.makeText(BindEmail.this, C.notice.EMAIL_NO_EMPTY, Toast.LENGTH_SHORT).show();
         }else {
+
+            //将邮箱绑定情况反馈给上一个活动
             roomInfo.edit().putString("email", email).apply();
             Intent intent = new Intent();
             intent.putExtra("ifBindEmail",ifBindEmail);

@@ -54,8 +54,7 @@ public class DrawGraph extends View implements ViewRefresher {
         this.context = context;
         p.setAntiAlias(true);
         RecentData.init(context);
-
-        Log.d("test4" ,"iamdrawing too");
+        
         //大圆的圆心坐标
         circleX = new float[7];
         circleY = new float[7];
@@ -109,6 +108,8 @@ public class DrawGraph extends View implements ViewRefresher {
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        Log.d("test4", "iamdrawing,too");
 
         p.setStyle(Paint.Style.FILL_AND_STROKE);
         p.setColor(Color.rgb(70, 222, 235));

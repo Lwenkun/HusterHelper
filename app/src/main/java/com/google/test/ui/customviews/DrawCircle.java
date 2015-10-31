@@ -28,7 +28,7 @@ public class DrawCircle extends RelativeLayout{
         super(context, attrs);
 
         canvasH = getHeight();
-        Log.d("test4", "iamdrawing");
+
         pGrayCircle.setStrokeWidth(30);
         pGrayCircle.setStyle(Paint.Style.STROKE);
         pGrayCircle.setColor(Color.LTGRAY);
@@ -42,6 +42,7 @@ public class DrawCircle extends RelativeLayout{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        Log.d("test4", "iamdrawing");
         canvas.drawCircle(canvasH / 2, canvasH / 2, canvasH / 2 - 25, pGrayCircle);
 
         oval.right = canvasH - 25;

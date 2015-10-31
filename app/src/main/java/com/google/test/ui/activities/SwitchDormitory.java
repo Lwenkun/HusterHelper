@@ -22,11 +22,11 @@ import com.google.test.common.C;
  */
 public class SwitchDormitory extends AppCompatActivity implements View.OnClickListener, OnItemSelectedListener{
 
-    private EditText buildNumInput;
+    private EditText et_buildNumInput;
 
-    private EditText roomNumInput;
+    private EditText et_roomNumInput;
 
-    private Spinner areaSelector;
+    private Spinner sp_areaSelector;
 
     private int position;
 
@@ -54,18 +54,18 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(this);
 
-        areaSelector = (Spinner) findViewById(R.id.area_selector);
-        areaSelector.setOnItemSelectedListener(this);
+        sp_areaSelector = (Spinner) findViewById(R.id.area_selector);
+        sp_areaSelector.setOnItemSelectedListener(this);
 
-        buildNumInput = (EditText) findViewById(R.id.build_num_input);
+        et_buildNumInput = (EditText) findViewById(R.id.build_num_input);
 
-        roomNumInput = (EditText) findViewById(R.id.room_num_input);
+        et_roomNumInput = (EditText) findViewById(R.id.room_num_input);
 
         Button bindEmail = (Button) findViewById(R.id.confirm);
         bindEmail.setOnClickListener(this);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitory.this, R.layout.item_area, areaList);
-        areaSelector.setAdapter(adapter);
+        sp_areaSelector.setAdapter(adapter);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
     private void check() {
 
         String area = areaList[position];
-        String buildNum = buildNumInput.getText().toString();
-        String roomNum = roomNumInput.getText().toString();
+        String buildNum = et_buildNumInput.getText().toString();
+        String roomNum = et_roomNumInput.getText().toString();
 
         if(buildNum.isEmpty()){
 
@@ -136,9 +136,9 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
         String buildNum = remRoomInfo.getString("buildNum", "");
         String roomNum = remRoomInfo.getString("roomNum","");
 
-        areaSelector.setSelection(position);
-        buildNumInput.setText(buildNum);
-        roomNumInput.setText(roomNum);
+        sp_areaSelector.setSelection(position);
+        et_buildNumInput.setText(buildNum);
+        et_roomNumInput.setText(roomNum);
         this.position = position;
     }
 }

@@ -44,7 +44,7 @@ public class MyRunnable implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         //参数组装
         if (map != null) {
             StringBuilder paramsBuilder = new StringBuilder();

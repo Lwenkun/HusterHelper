@@ -51,7 +51,7 @@
                 android:textSize="15sp"
                 android:text="电量还是够用的，用空调不要心慌慌哦"/>
 
-            <TextView
+            <View
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -96,7 +96,7 @@
             android:layout_height="0dp"
             android:layout_weight="2.5"
             android:orientation="vertical">
-            <TextView
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grayHint"/>

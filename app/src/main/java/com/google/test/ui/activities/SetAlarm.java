@@ -29,13 +29,13 @@ import java.util.HashMap;
  */
 public class SetAlarm extends AppCompatActivity implements View.OnClickListener, CallBack{
 
-    private EditText notifyInput;
+    private EditText et_notifyInput;
 
     private String email;
 
     private boolean ifBindEmail;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog pd_progressDialog;
 
     private MyHandler mHandler = new MyHandler();
 
@@ -43,7 +43,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
 
         @Override
         public void handleMessage(Message msg) {
-            progressDialog.dismiss();
+            pd_progressDialog.dismiss();
             switch (msg.what) {
                 case 200:
                     showDialogNotice();
@@ -82,7 +82,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
         setContentView(R.layout.activity_set_alarm);
         RelativeLayout back = (RelativeLayout) findViewById(R.id.back);
         back.setOnClickListener(this);
-        notifyInput = (EditText) findViewById(R.id.notify_input);
+        et_notifyInput = (EditText) findViewById(R.id.notify_input);
         ImageButton bindEmail = (ImageButton) findViewById(R.id.bind_email);
         bindEmail.setOnClickListener(this);
     }
@@ -105,7 +105,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
         String area = roomInfo.getString("area", "");
         String buildNum = roomInfo.getString("buildNum", "");
         String roomNum = roomInfo.getString("roomNum", "");
-        String notify = notifyInput.getText().toString();
+
         String params;
         try {
             HttpUtil.setUrl(new URL("http://api.hustonline.net/dianfei/notify"));
@@ -125,7 +125,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
         }
         HttpUtil.setHandler(new Handler() {
             public void handleMessage(Message msg) {
-                progressDialog.dismiss();
+
                 msg.what = BaseJSONParser.parseJSONForCode((JSONObject) msg.obj);
                 //  Log.d("test3", ""+msg.what);
                 switch (msg.what) {
@@ -167,7 +167,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
         params.put("room", roomInfo.getString("roomNum", ""));
         params.put("email", email);
         if (ifBindEmail) {
-            params.put("notify", notifyInput.getText().toString());
+            params.put("notify", et_notifyInput.getText().toString());
             AnsynHttpRequest.doPostRequest(this, params, C.url.POST_EMAIL, false, this);
         } else{
             AnsynHttpRequest.doDeleteRequest(this, params, C.url.POST_EMAIL, false, this);
@@ -195,10 +195,10 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
                 if(resultCode == RESULT_OK) {
                     email = data.getStringExtra("email");
                     ifBindEmail = data.getBooleanExtra("ifBindEmail",true);
-                    progressDialog = new ProgressDialog(SetAlarm.this);
-                    progressDialog.setCancelable(false);
-                    progressDialog.setMessage(C.notice.EMAIL_BEING_SENT);
-                    progressDialog.show();
+                    pd_progressDialog = new ProgressDialog(SetAlarm.this);
+                    pd_progressDialog.setCancelable(false);
+                    pd_progressDialog.setMessage(C.notice.EMAIL_BEING_SENT);
+                    pd_progressDialog.show();
                     sendRequest();
                 }
                 break;
