@@ -20,7 +20,7 @@ import com.google.test.common.C;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class SwitchDormitory extends AppCompatActivity implements View.OnClickListener, OnItemSelectedListener{
+public class SwitchDormitoryActivity extends AppCompatActivity implements View.OnClickListener, OnItemSelectedListener{
 
     private EditText et_buildNumInput;
 
@@ -64,7 +64,7 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
         Button bindEmail = (Button) findViewById(R.id.confirm);
         bindEmail.setOnClickListener(this);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitory.this, R.layout.item_area, areaList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SwitchDormitoryActivity.this, R.layout.item_area, areaList);
         sp_areaSelector.setAdapter(adapter);
     }
 
@@ -98,11 +98,11 @@ public class SwitchDormitory extends AppCompatActivity implements View.OnClickLi
 
         if(buildNum.isEmpty()){
 
-            Toast.makeText(SwitchDormitory.this, C.notice.BUILD_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitoryActivity.this, C.notice.BUILD_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
 
         }else if(roomNum.isEmpty()){
 
-            Toast.makeText(SwitchDormitory.this, C.notice.ROOM_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
+            Toast.makeText(SwitchDormitoryActivity.this, C.notice.ROOM_NUM_NO_EMPTY, Toast.LENGTH_SHORT).show();
 
         }else {
 

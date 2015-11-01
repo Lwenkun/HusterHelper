@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.google.test.R;
 import com.google.test.common.C;
-import com.google.test.json.CallBack;
+import com.google.test.Interface.CallBack;
 import com.google.test.net.AnsynHttpRequest;
 
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class SetAlarm extends AppCompatActivity implements View.OnClickListener, CallBack{
+public class SetAlarmActivity extends AppCompatActivity implements View.OnClickListener, CallBack{
 
     private EditText et_notifyInput;
 
@@ -49,16 +49,16 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
                     showDialogNotice();
                     break;
                 case 402:
-                    Toast.makeText(SetAlarm.this, C.notice.INPUT_ERROR, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetAlarmActivity.this, C.notice.INPUT_ERROR, Toast.LENGTH_SHORT).show();
                     break;
                 case 400:
-                    Toast.makeText(SetAlarm.this, C.notice.EMAIL_BIND_FAILED, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetAlarmActivity.this, C.notice.EMAIL_BIND_FAILED, Toast.LENGTH_SHORT).show();
                     break;
                 case 410:
                     if (ifBindEmail) {
-                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_ALREADY_BINDED, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarmActivity.this, C.notice.EMAIL_ALREADY_BINDED, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_HASNOT_BINDED, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SetAlarmActivity.this, C.notice.EMAIL_HASNOT_BINDED, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 default:
@@ -91,7 +91,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bind_email :
-                Intent intent= new Intent(SetAlarm.this, BindEmail.class);
+                Intent intent= new Intent(SetAlarmActivity.this, BindEmailActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.back:
@@ -99,60 +99,6 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
                 break;
         }
     }
-
-  /*  public void sendRequest() {
-        SharedPreferences roomInfo = getSharedPreferences("RoomInfo",MODE_PRIVATE);
-        String area = roomInfo.getString("area", "");
-        String buildNum = roomInfo.getString("buildNum", "");
-        String roomNum = roomInfo.getString("roomNum", "");
-
-        String params;
-        try {
-            HttpUtil.setUrl(new URL("http://api.hustonline.net/dianfei/notify"));
-            params = "area=" + URLEncoder.encode(area, "UTF-8")
-                    + "&build=" + buildNum
-                    + "&room=" + roomNum
-                    + "&email=" + email;
-            if(ifBindEmail){
-                HttpUtil.setRequestMethod("POST");
-                params = params + "&notify=" + notify;
-            }else {
-                HttpUtil.setRequestMethod("DELETE");
-            }
-            HttpUtil.setParams(params);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        HttpUtil.setHandler(new Handler() {
-            public void handleMessage(Message msg) {
-
-                msg.what = BaseJSONParser.parseJSONForCode((JSONObject) msg.obj);
-                //  Log.d("test3", ""+msg.what);
-                switch (msg.what) {
-                    case 200:
-                        showDialogNotice();
-                        break;
-                    case 402:
-                        Toast.makeText(SetAlarm.this, C.notice.INPUT_ERROR, Toast.LENGTH_SHORT).show();
-                        break;
-                    case 400:
-                        Toast.makeText(SetAlarm.this, C.notice.EMAIL_BIND_FAILED, Toast.LENGTH_SHORT).show();
-                        break;
-                    case 410:
-                        if (ifBindEmail) {
-                            Toast.makeText(SetAlarm.this, C.notice.EMAIL_ALREADY_BINDED, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(SetAlarm.this, C.notice.EMAIL_HASNOT_BINDED, Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-        HttpUtil.sendRequest();
-
-    }*/
 
     public void sendRequest() {
 
@@ -195,7 +141,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
                 if(resultCode == RESULT_OK) {
                     email = data.getStringExtra("email");
                     ifBindEmail = data.getBooleanExtra("ifBindEmail",true);
-                    pd_progressDialog = new ProgressDialog(SetAlarm.this);
+                    pd_progressDialog = new ProgressDialog(SetAlarmActivity.this);
                     pd_progressDialog.setCancelable(false);
                     pd_progressDialog.setMessage(C.notice.EMAIL_BEING_SENT);
                     pd_progressDialog.show();
@@ -208,7 +154,7 @@ public class SetAlarm extends AppCompatActivity implements View.OnClickListener,
     }
 
     public void showDialogNotice() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(SetAlarm.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(SetAlarmActivity.this);
         dialog.setTitle("Note:");
         if(ifBindEmail) {
             dialog.setMessage(C.notice.EMAIL_BINDED_SENT);

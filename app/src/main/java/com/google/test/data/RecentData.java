@@ -71,7 +71,7 @@ public class RecentData {
             case DATA_MAX_ELECTRICITY:
                 return e[6];
             case AVERAGE:
-                return e[6] - e[0];
+                return (e[6] - e[0])/6;
             default:
                 return 0;
         }

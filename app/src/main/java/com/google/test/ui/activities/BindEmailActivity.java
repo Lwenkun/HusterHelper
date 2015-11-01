@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,7 @@ import com.google.test.common.C;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class BindEmail extends Activity implements View.OnClickListener{
+public class BindEmailActivity extends Activity implements View.OnClickListener{
 
     private EditText et_emailInput;
     
@@ -87,9 +88,10 @@ public class BindEmail extends Activity implements View.OnClickListener{
     }
 
     public void sendEmail() {
+
     	String email = et_emailInput.getText().toString();
         if(email.equals("")) {
-        	Toast.makeText(BindEmail.this, C.notice.EMAIL_NO_EMPTY, Toast.LENGTH_SHORT).show();
+        	Toast.makeText(BindEmailActivity.this, C.notice.EMAIL_NO_EMPTY, Toast.LENGTH_SHORT).show();
         }else {
 
             //将邮箱绑定情况反馈给上一个活动
@@ -101,6 +103,7 @@ public class BindEmail extends Activity implements View.OnClickListener{
             finish();
         }
     }
+
 
 }
 

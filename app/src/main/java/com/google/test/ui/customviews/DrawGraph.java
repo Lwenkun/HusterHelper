@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.google.test.data.DayInfo;
 import com.google.test.data.RecentData;
-import com.google.test.ui.ViewRefresher;
+import com.google.test.Interface.ViewRefresher;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class DrawGraph extends View implements ViewRefresher {
 
     private float[] Y;
 
-    private float maxElectricity;
+  //  private float maxElectricity;
 
     private int position = 6;
 
@@ -54,23 +54,30 @@ public class DrawGraph extends View implements ViewRefresher {
         this.context = context;
         p.setAntiAlias(true);
         RecentData.init(context);
-        
+
+        Log.d("test4", "iamcreatedfor thefirsttime");
+
+        //曲线上表示最近电量的点的坐标
+        Y = new float[7];
+
         //大圆的圆心坐标
         circleX = new float[7];
         circleY = new float[7];
-
-        //初始化数据
-        initData();
     }
 
-    public void initData() {
+    public void initData(Canvas canvas) {
 
         //获得最近电量数据
         daysInfo = RecentData.getRecentData();
 
         //获取画布的宽和高
-        canvasH = getHeight();
-        canvasW = getWidth();
+        canvasH = canvas.getHeight();
+        canvasW = canvas.getWidth();
+
+        if(canvasH == canvasW ) {
+            Log.d("test4", "true");
+            Log.d("test4", ""+ canvasH);
+        }
 
         //最近电量显示中的大圆半径
         r = canvasH / 4;
@@ -78,7 +85,7 @@ public class DrawGraph extends View implements ViewRefresher {
         //设置最近电量显示图中两点间的间隔
         interval = (canvasW - 2 * r) / 6;
 
-        //计算大圆的横坐标
+        //计算大圆各个位置的横坐标
         for (int i = 0; i <= 6; i++) {
             circleX[i] = r + i * interval;
         }
@@ -86,8 +93,6 @@ public class DrawGraph extends View implements ViewRefresher {
         //计算图像缩放系数，这里将曲线范围缩放成区域高度的2/5
         float k = (canvasH * 2 / 5) / RecentData.getData(RecentData.DATA_MAX_ELECTRICITY);
 
-        //曲线上表示最近电量的点的坐标
-        Y = new float[7];
         for (int i = 0; i <= 6; i++) {
             Y[6 - i] = canvasH - daysInfo.get(i).getElectricity() * k;
         }
@@ -101,13 +106,13 @@ public class DrawGraph extends View implements ViewRefresher {
     //刷新view
     @Override
     public void refreshView() {
-        initData();
         invalidate();
     }
 
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        initData(canvas);
 
         Log.d("test4", "iamdrawing,too");
 
@@ -146,6 +151,7 @@ public class DrawGraph extends View implements ViewRefresher {
         p.setTextSize(r / 3);
         canvas.drawText(String.valueOf(daysInfo.get(6 - position).getElectricity()), circleX[position], circleY[position] + r / 3, p);
 
+        Log.d("test4", "look here");
         //画小圆
         canvas.drawCircle(circleX[position], circleY[position] + r + 50, 35, p);
         p.setColor(Color.rgb(70, 222, 235));
@@ -171,8 +177,6 @@ public class DrawGraph extends View implements ViewRefresher {
         this.invalidate();
         return true;
     }
-
-
 
 }
 

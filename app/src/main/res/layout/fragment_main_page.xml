@@ -14,10 +14,10 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:src="@drawable/alarm_able"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:padding="5dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:clickable="true"/>
             <com.google.test.ui.customviews.DrawCircle
                 android:id="@+id/show_electricity"
@@ -25,21 +25,21 @@
                 android:layout_height="160dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp">
-                    <TextView
-                        android:id="@+id/electricity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="70dp"
-                        android:layout_centerInParent="true"
-                        android:textSize="45sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_alignTop="@id/electricity"
-                        android:layout_alignBottom="@id/electricity"
-                        android:layout_centerInParent="true"
-                        android:gravity="bottom"
-                        android:textColor="@color/grayText"
-                        android:text="kw-h" />
+                    <!--<TextView-->
+                        <!--android:id="@+id/electricity"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="70dp"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:textSize="45sp"/>-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="0dp"-->
+                        <!--android:layout_alignTop="@id/electricity"-->
+                        <!--android:layout_alignBottom="@id/electricity"-->
+                        <!--android:layout_centerInParent="true"-->
+                        <!--android:gravity="bottom"-->
+                        <!--android:textColor="@color/grayText"-->
+                        <!--android:text="kw-h" />-->
             </com.google.test.ui.customviews.DrawCircle>
             <TextView
                 android:id="@+id/notice"
@@ -111,9 +111,7 @@
                 android:gravity="center_vertical"/>
             <com.google.test.ui.customviews.DrawGraph
                 android:id="@+id/show_recent_electricity"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

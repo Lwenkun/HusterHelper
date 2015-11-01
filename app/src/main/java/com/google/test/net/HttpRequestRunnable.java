@@ -3,7 +3,7 @@ package com.google.test.net;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.test.json.CallBack;
+import com.google.test.Interface.CallBack;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Created by 15119 on 2015/10/23.
  */
-public class MyRunnable implements Runnable {
+public class HttpRequestRunnable implements Runnable {
 
     private Context context;
 
@@ -31,7 +31,7 @@ public class MyRunnable implements Runnable {
 
     private String params;
 
-    public MyRunnable(Context context, String requestMethod, HashMap<String, String> map, String url, CallBack callBack) {
+    public HttpRequestRunnable(Context context, String requestMethod, HashMap<String, String> map, String url, CallBack callBack) {
 
         this.context = context;
         this.requestMethod = requestMethod;
@@ -46,7 +46,7 @@ public class MyRunnable implements Runnable {
         }
 
         //参数组装
-        if (map != null) {
+        if (! "GET".equals(requestMethod)) {
             StringBuilder paramsBuilder = new StringBuilder();
 
             Set<String> keySet = map.keySet();
@@ -72,31 +72,31 @@ public class MyRunnable implements Runnable {
 
         try {
 
+            //创建http连接
             connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+            connection.setRequestMethod(requestMethod);
             connection.setConnectTimeout(8000);
             connection.setReadTimeout(8000);
-            connection.setRequestMethod(requestMethod);
 
             //如果是POST或DELETE方法
-            if (params != null) {
+            if (! "GET".equals(requestMethod)) {
+
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+
                 DataOutputStream out = new DataOutputStream(connection.getOutputStream());
                 out.writeBytes(params);
-                Log.d("MyRunnable", "params:" + params);
                 out.flush();
                 out.close();
             }
 
             //从服务器获取数据
             InputStream in = connection.getInputStream();
-            Log.d("MyRunnable", "in");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder response = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
-                Log.d("MyRunnable", "response:" + response.toString());
 
             }
 
@@ -104,7 +104,6 @@ public class MyRunnable implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("MyRunnable", "Runnable error");
         } finally {
             if (connection != null) {
                 connection.disconnect();

@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.test.json.CallBack;
+import com.google.test.Interface.CallBack;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -23,7 +23,7 @@ public class AnsynHttpRequest {
             showDialog();
         }
 
-        ThreadPoolUtils.execute(new MyRunnable(context, requestMethod, map, url, callBack));
+        ThreadPoolUtils.execute(new HttpRequestRunnable(context, requestMethod, map, url, callBack));
     }
 
     //处理Get请求
@@ -40,7 +40,6 @@ public class AnsynHttpRequest {
         for (String key : keySet) {
             if (isFirstParam) {
                     urlBuilder.append(key + "=" + map.get(key));
-                Log.d("test4", "utf-8" + urlBuilder.toString());
                 isFirstParam = false;
             } else {
                 urlBuilder.append("&" + key + "=" + map.get(key));
@@ -49,8 +48,6 @@ public class AnsynHttpRequest {
 
         url = urlBuilder.toString();
 
-        Log.d("test4", url);
-
         doAnsynHttpRequest(context, "GET", null, url, showDialog, callBack);
     }
 
@@ -58,7 +55,6 @@ public class AnsynHttpRequest {
     public static void doPostRequest(Context context, HashMap<String, String> map, String url, boolean showDialog, CallBack callBack) {
 
         doAnsynHttpRequest(context, "POST", map, url, showDialog, callBack);
-        Log.d("test4", url);
     }
 
     //处理Delete请求

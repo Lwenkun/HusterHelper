@@ -11,13 +11,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.BindEmail" android:theme="@style/myTheme">
+        <activity android:name=".ui.activities.BindEmailActivity" android:theme="@style/myTheme">
 
         </activity>
-        <activity android:name=".ui.activities.SetAlarm" >
+        <activity android:name=".ui.activities.SetAlarmActivity" >
 
         </activity>
-        <activity android:name=".ui.activities.SwitchDormitory">
+        <activity android:name=".ui.activities.SwitchDormitoryActivity">
 
         </activity>
     </application>

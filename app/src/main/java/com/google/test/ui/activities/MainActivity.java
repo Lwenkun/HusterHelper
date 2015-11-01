@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements OnClickListener {
                 finish();
                 break;
             case R.id.switcher:
-                Intent intent = new Intent(MainActivity.this, SwitchDormitory.class);
+                Intent intent = new Intent(MainActivity.this, SwitchDormitoryActivity.class);
                 startActivityForResult(intent, 1);
                 break;
         }
