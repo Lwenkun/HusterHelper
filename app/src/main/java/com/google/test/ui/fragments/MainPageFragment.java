@@ -16,13 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.test.Interface.CallBack;
 import com.google.test.R;
 import com.google.test.common.C;
 import com.google.test.data.DayInfo;
 import com.google.test.data.RecentData;
-import com.google.test.net.AnsynHttpRequest;
 import com.google.test.ui.activities.SetAlarmActivity;
+
+import net.AnsynHttpRequest;
+import net.CallBack;
 
 import org.json.JSONObject;
 

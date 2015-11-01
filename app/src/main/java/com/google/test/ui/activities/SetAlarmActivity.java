@@ -16,8 +16,9 @@ import android.widget.Toast;
 
 import com.google.test.R;
 import com.google.test.common.C;
-import com.google.test.Interface.CallBack;
-import com.google.test.net.AnsynHttpRequest;
+
+import net.AnsynHttpRequest;
+import net.CallBack;
 
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ import java.util.HashMap;
 /**
  * Created by 15119 on 2015/9/30.
  */
-public class SetAlarmActivity extends AppCompatActivity implements View.OnClickListener, CallBack{
+public class SetAlarmActivity extends AppCompatActivity implements View.OnClickListener, CallBack {
 
     private EditText et_notifyInput;
 
